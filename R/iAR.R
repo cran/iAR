@@ -1,0 +1,29 @@
+#' iAR: Irregularly Observed Autoregressive Models
+#'
+#' Description: Data sets, functions and scripts with examples to implement autoregressive
+#' models for irregularly observed time series. The models available in this package
+#' are the irregular autoregressive model (Eyheramendy et al.(2018) <doi:10.1093/mnras/sty2487>),
+#' the complex irregular autoregressive model (Elorrieta et al.(2019) <doi:10.1051/0004-6361/201935560>)
+#' and the bivariate irregular autoregressive model.
+#'
+#' @section BIAR functions:
+#' The foo functions ...
+#'
+#' @section CIAR functions:
+#' The foo functions ...
+#'
+#' @section IAR functions:
+#' heloo
+#'
+#' @docType package
+#' @name iAR
+#' @import Rcpp ggplot2
+#' @importFrom stats nlminb rexp
+#' @importFrom stats rnorm runif
+#' @importFrom stats rt anova
+#' @importFrom stats lm residuals
+#' @importFrom stats optimize var
+#' @importFrom stats pnorm rgamma
+#' @importFrom stats sd
+#' @useDynLib iAR, .registration = TRUE
+NULL

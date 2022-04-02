@@ -3,14 +3,14 @@
 #' Simulates a BIAR Time Series Model
 #'
 #' @param n Length of the output bivariate time series. A strictly positive integer.
-#' @param sT Array with observational times.
-#' @param phi.R Autocorrelation coefficient of BIAR model. A value between -1 and 1.
-#' @param phi.I Crosscorrelation coefficient of BIAR model. A value between -1 and 1.
+#' @param st Array with observational times.
+#' @param phiR Autocorrelation coefficient of BIAR model. A value between -1 and 1.
+#' @param phiI Crosscorrelation coefficient of BIAR model. A value between -1 and 1.
 #' @param delta1 Array with the measurements error standard deviations of the first time series of the bivariate process.
 #' @param delta2 Array with the measurements error standard deviations of the second time series of the bivariate process.
 #' @param rho Contemporary correlation coefficient of BIAR model. A value between -1 and 1.
 #'
-#' @details The chosen phi.R and phi.I values must satisfy the condition $|phi.R + i phi.I| < 1$.
+#' @details The chosen phiR and phiI values must satisfy the condition $|phiR + i phiI| < 1$.
 #'
 #' @return A list with the following components:
 #' \itemize{
@@ -21,33 +21,34 @@
 #'
 #' @export
 #'
+#' @references
+#' \insertRef{Elorrieta_2021}{iAR}
 #' @seealso
-#'
 #' \code{\link{gentime}}
 #'
 #' @examples
 #' n=300
 #' set.seed(6714)
 #' st<-gentime(n)
-#' x=BIAR.sample(n=n,phi.R=0.9,phi.I=0.3,sT=st)
+#' x=BIARsample(n=n,phiR=0.9,phiI=0.3,st=st)
 #' plot(st,x$y[1,],type='l')
 #' plot(st,x$y[2,],type='l')
-#' x=BIAR.sample(n=n,phi.R=-0.9,phi.I=-0.3,sT=st)
+#' x=BIARsample(n=n,phiR=-0.9,phiI=-0.3,st=st)
 #' plot(st,x$y[1,],type='l')
 #' plot(st,x$y[2,],type='l')
-BIAR.sample<-function (n, sT, phi.R, phi.I, delta1=0,delta2=0,rho = 0)
+BIARsample<-function (n, st, phiR, phiI, delta1=0,delta2=0,rho = 0)
 {
-  delta <- diff(sT)
+  delta <- diff(st)
   x = matrix(0, nrow = 2, ncol = n)
   F = matrix(0, nrow = 2, ncol = 2)
-  phi = complex(1, real = phi.R, imaginary = phi.I)
+  phi = complex(1, real = phiR, imaginary = phiI)
   if (Mod(phi) >= 1)
     stop("Mod of Phi must be less than one")
   Phi = Mod(phi)
-  psi <- acos(phi.R/Phi)
-  if (phi.I < 0)
-    psi = -acos(phi.R/Phi)
-  #psi2 <- asin(phi.I/Phi)
+  psi <- acos(phiR/Phi)
+  if (phiI < 0)
+    psi = -acos(phiR/Phi)
+  #psi2 <- asin(phiI/Phi)
   e.R = rnorm(n)
   e.I = rnorm(n)
   state.error = rbind(e.R, e.I)
@@ -88,5 +89,5 @@ BIAR.sample<-function (n, sT, phi.R, phi.I, delta1=0,delta2=0,rho = 0)
     y[, i ] = G %*% x[, i] + observation.error[,i]
   }
   y[, n ] = G %*% x[, n] + observation.error[,n]
-  return(list(t = sT, y = y, Sigma = Sigma))
+  return(list(t = st, y = y, Sigma = Sigma))
 }

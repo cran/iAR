@@ -4,15 +4,17 @@
 \alias{foldlc}
 \title{Plotting folded light curves}
 \usage{
-foldlc(file, f1)
+foldlc(file, f1, plot = T)
 }
 \arguments{
 \item{file}{Matrix with the light curve observations. The first column must have the irregular times, the second column must have the brightness magnitudes and the third column must have the measurement errors.}
 
 \item{f1}{Frequency (1/Period) of the light curve.}
+
+\item{plot}{logical; if TRUE, the function returns the plot of folded time series.}
 }
 \value{
-A plot of the folded (phased) time series.
+A matrix whose first column has the folded (phased) observational times.
 }
 \description{
 This function plots a time series folded on its period.

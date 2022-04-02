@@ -3,7 +3,7 @@
 #' Maximum Likelihood Estimation of the IAR Model.
 #'
 #' @param y Array with the time series observations.
-#' @param sT Array with the irregular observational times.
+#' @param st Array with the irregular observational times.
 #' @param delta Array with the measurements error standard deviations.
 #' @param include.mean logical; if true, the array y has zero mean; if false, y has a mean different from zero.
 #' @param standarized logical; if true, the array y is standarized; if false, y contains the raw time series.
@@ -19,16 +19,16 @@
 #'
 #' @seealso
 #'
-#' \code{\link{gentime}}, \code{\link{IAR.sample}}, \code{\link{arima}}, \code{\link{IAR.phi.loglik}}
+#' \code{\link{gentime}}, \code{\link{IARsample}}, \code{\link{arima}}, \code{\link{IARphiloglik}}
 #'
 #' @examples
 #' #Generating IAR sample
 #' set.seed(6714)
 #' st<-gentime(n=100)
-#' y<-IAR.sample(phi=0.99,n=100,st)
+#' y<-IARsample(phi=0.99,st=st,n=100)
 #' y<-y$series
 #' #Compute Phi
-#' phi=IAR.loglik(y=y,sT=st)$phi
+#' phi=IARloglik(y=y,st=st)$phi
 #' print(phi)
 #' #Compute the standard deviation of innovations
 #' n=length(y)
@@ -71,10 +71,10 @@
 #' abline(h=sear,col='blue',lwd=2)
 #' abline(h=searf,col='green',lwd=2)
 #' abline(h=mean(nuhat3[-1]),col='black',lwd=2)
-IAR.loglik=function(y,sT,delta=0,include.mean='FALSE',standarized='TRUE'){
+IARloglik=function(y,st,delta=0,include.mean='FALSE',standarized='TRUE'){
   if(sum(delta)==0){
     delta=rep(0,length(y))}
-  out=optimize(IAR.phi.loglik,interval=c(0,1),y=y,sT=sT,delta=delta,include.mean=include.mean,standarized=standarized)
+  out=optimize(IARphiloglik, interval=c(0,1), y=y, st=st, delta_input=delta, includeMean = include.mean, standarized = standarized)
   phi=out$minimum
   ll=out$objective
   return(list(phi=phi,loglik=ll))

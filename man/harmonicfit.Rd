@@ -4,7 +4,14 @@
 \alias{harmonicfit}
 \title{Harmonic Fit to Time Series}
 \usage{
-harmonicfit(file, f1, nham = 4, weights = NULL, print = FALSE)
+harmonicfit(
+  file,
+  f1,
+  nham = 4,
+  weights = NULL,
+  print = FALSE,
+  remove_trend = TRUE
+)
 }
 \arguments{
 \item{file}{A matrix with two columns. The first column corresponds to the observations times, and the second column corresponds to the measures.}
@@ -16,6 +23,8 @@ harmonicfit(file, f1, nham = 4, weights = NULL, print = FALSE)
 \item{weights}{An array with the weights of each observation}
 
 \item{print}{logical; if true, the summary of the harmonic fitted model will be printed. The default value is false.}
+
+\item{remove_trend}{logical; if true, the linear trend of time series will be removed before the the harmonic model is fitted.}
 }
 \value{
 A list with the following components:
@@ -24,6 +33,7 @@ A list with the following components:
 \item{t}{ Observations times.}
 \item{R2}{ Adjusted R-Squared.}
 \item{MSE}{ Mean Squared Error.}
+\item{coef}{ Summary of the coefficients estimated by the harmonic model.}
 }
 }
 \description{

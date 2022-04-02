@@ -1,6 +1,6 @@
 #' Maximum Likelihood Estimation of the CIAR Model via Kalman Recursions
 #'
-#' Maximum Likelihood Estimation of the CIAR model parameters phi.R and phi.I. The estimation procedure uses the Kalman Filter to find the maximum of the likelihood.
+#' Maximum Likelihood Estimation of the CIAR model parameters phiR and phiI. The estimation procedure uses the Kalman Filter to find the maximum of the likelihood.
 #'
 #' @param y Array with the time series observations.
 #' @param t Array with the irregular observational times.
@@ -13,9 +13,9 @@
 #'
 #' @return A list with the following components:
 #' \itemize{
-#' \item{phiR}{ MLE of the Real part of the coefficient of CIAR model (phi.R).}
-#' \item{phiI}{ MLE of the Imaginary part of the coefficient of the CIAR model (phi.I).}
-#' \item{ll}{ Value of the negative log likelihood evaluated in phi.R and phi.I.}
+#' \item{phiR}{ MLE of the Real part of the coefficient of CIAR model (phiR).}
+#' \item{phiI}{ MLE of the Imaginary part of the coefficient of the CIAR model (phiI).}
+#' \item{ll}{ Value of the negative log likelihood evaluated in phiR and phiI.}
 #' }
 #' @export
 #' @references
@@ -23,20 +23,20 @@
 #'
 #' @seealso
 #'
-#' \code{\link{gentime}}, \code{\link{CIAR.sample}}, \code{\link{CIAR.phi.kalman}}
+#' \code{\link{gentime}}, \code{\link{CIARsample}}, \code{\link{CIARphikalman}}
 #'
 #'
 #' @examples
 #' n=100
 #' set.seed(6714)
 #' st<-gentime(n)
-#' x=CIAR.sample(n=n,phi.R=0.9,phi.I=0,sT=st,c=1)
+#' x=CIARsample(n=n,phiR=0.9,phiI=0,st=st,c=1)
 #' y=x$y
 #' y1=y/sd(y)
-#' ciar=CIAR.kalman(y=y1,t=st)
+#' ciar=CIARkalman(y=y1,t=st)
 #' ciar
 #' Mod(complex(real=ciar$phiR,imaginary=ciar$phiI))
-CIAR.kalman<-function(y,t,delta=0,zero.mean='TRUE',standarized='TRUE',c=1,niter=10,seed=1234)
+CIARkalman<-function(y,t,delta=0,zero.mean='TRUE',standarized='TRUE',c=1,niter=10,seed=1234)
 {
   set.seed(seed)
   aux<-1e10
@@ -46,12 +46,14 @@ CIAR.kalman<-function(y,t,delta=0,zero.mean='TRUE',standarized='TRUE',c=1,niter=
     delta=rep(0,length(y))}
   for(i in 1:niter)
   {
-    phi.R=2*runif(1)-1
-    phi.I=2*runif(1)-1
-    #print(complex(1,real=phi.R,imaginary=phi.I))
-    if(Mod(complex(1,real=phi.R,imaginary=phi.I))<1)
+    phiR=2*runif(1)-1
+    phiI=2*runif(1)-1
+    if(Mod(complex(1,real=phiR,imaginary=phiI))<1)
     {
-      optim<-nlminb(start=c(phi.R,phi.I),objective=CIAR.phi.kalman,y=y,t=t,yerr=delta,zero.mean=zero.mean,standarized=standarized,c=c,lower=c(-1,-1),upper=c(1,1))
+      optim <- nlminb(start=c(phiR,phiI), objective=CIARphikalman, y=y, t=t,
+                      yerr=delta, zeroMean=zero.mean, standarized=standarized,
+                      c=c, lower=c(-1,-1), upper=c(1,1))
+
       value<-optim$objective
     }
     if(aux>value)

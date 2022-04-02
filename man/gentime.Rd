@@ -4,18 +4,33 @@
 \alias{gentime}
 \title{Generating Irregularly spaced times}
 \usage{
-gentime(n, lambda1 = 130, lambda2 = 6.5, p1 = 0.15, p2 = 0.85)
+gentime(
+  n,
+  distribution = "expmixture",
+  lambda1 = 130,
+  lambda2 = 6.5,
+  p1 = 0.15,
+  p2 = 0.85,
+  a = 0,
+  b = 1
+)
 }
 \arguments{
-\item{n}{A positive integer. Length of observations times.}
+\item{n}{A positive integer. Length of observation times.}
 
-\item{lambda1}{Mean (1/rate) of the first exponential distribution.}
+\item{distribution}{Distribution of the observation times that will be generated. Default value is "expmixture" for a mixture of exponential distributions. Alternative distributions are "uniform", "exponential" and "gamma".}
 
-\item{lambda2}{Mean (1/rate) of the second exponential distribution.}
+\item{lambda1}{Mean (1/rate) of the exponential distribution or the first exponential distribution in a mixture of exponential distributions.}
 
-\item{p1}{Weight of the first exponential distribution.}
+\item{lambda2}{Mean (1/rate) of the second exponential distribution in a mixture of exponential distributions.}
 
-\item{p2}{Weight of the second exponential distribution.}
+\item{p1}{Weight of the first exponential distribution in a mixture of exponential distributions.}
+
+\item{p2}{Weight of the second exponential distribution in a mixture of exponential distributions.}
+
+\item{a}{Shape parameter of a gamma distribution or lower limit of the uniform distribution.}
+
+\item{b}{Scale parameter of a gamma distribution or upper limit of the uniform distribution.}
 }
 \value{
 Array with irregularly spaced observations times
@@ -25,10 +40,13 @@ Function to generate irregularly spaced times from a mixture of exponential dist
 }
 \examples{
 st<-gentime(n=100)
+st<-gentime(n=100,distribution="uniform")
+st<-gentime(n=100,distribution="gamma",a=1,b=1)
+st<-gentime(n=100,distribution="exponential",lambda1=1)
 }
 \references{
 \insertRef{Eyheramendy_2018}{iAR}
 }
 \seealso{
-\code{\link{IAR.sample}}
+\code{\link{IARsample}}
 }

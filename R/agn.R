@@ -1,7 +1,8 @@
-#' Active Galactic Nuclei
-#'
-#' Time series of the AGN MCG-6-30-15 measured in the K-band between 2006 August and 2011 July with the ANDICAM camera mounted on the 1.3 m telescope at Cerro Tololo Inter-American Observatory (CTIO)
-#'
+#' @name agn
+#' @title Active Galactic Nuclei
+#' @description Time series of the AGN MCG-6-30-15 measured in the K-band between 2006 August and 2011 July with the ANDICAM camera mounted on the 1.3 m telescope at Cerro Tololo Inter-American Observatory (CTIO)
+#' @docType data
+#' @usage agn
 #' @format A data frame with 237 observations on the following 3 variables:
 #' \describe{
 #'   \item{t}{heliocentric Julian Day - 2450000}

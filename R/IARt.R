@@ -3,7 +3,7 @@
 #' Maximum Likelihood Estimation of the IAR-T model.
 #'
 #' @param y Array with the time series observations
-#' @param sT Array with the irregular observational times
+#' @param st Array with the irregular observational times
 #' @param nu degrees of freedom
 #'
 #' @return A list with the following components:
@@ -18,17 +18,17 @@
 #'
 #' @seealso
 #'
-#' \code{\link{gentime}}, \code{\link{IARt.sample}}, \code{\link{IAR.phi.t}}
+#' \code{\link{gentime}}, \code{\link{IARtsample}}, \code{\link{IARphit}}
 #'
 #' @examples
 #' n=300
 #' set.seed(6714)
 #' st<-gentime(n)
-#' y<-IARt.sample(n,0.9,st,sigma2=1,nu=3)
-#' model<-IAR.t(y$y, sT=st)
+#' y<-IARtsample(n,0.9,st,sigma2=1,nu=3)
+#' model<-IARt(y$y, st=st)
 #' phi=model$phi
 #' sigmaest=model$sigma
-IAR.t<-function (y, sT,nu=3) #Find minimum of IAR.phi.gamma
+IARt<-function (y, st,nu=3) 
 {
   aux<-1e10
   value<-1e10
@@ -37,9 +37,8 @@ IAR.t<-function (y, sT,nu=3) #Find minimum of IAR.phi.gamma
   {
     phi=runif(1)
     sigma=var(y)*runif(1)
-    optim<-nlminb(start=c(phi,sigma),objective=IAR.phi.t,y=y,sT=sT,nu=nu,lower=c(0,0.0001),upper=c(0.9999,2*var(y)))
+    optim<-nlminb(start=c(phi,sigma),objective=IARphit,y=y,st=st,nu=nu,lower=c(0,0.0001),upper=c(0.9999,2*var(y)))
     value<-optim$objective
-    #print(c(optim$objective,optim$par,aux>value))
     if(aux>value)
     {
       par<-optim$par

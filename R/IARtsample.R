@@ -25,10 +25,10 @@
 #' n=300
 #' set.seed(6714)
 #' st<-gentime(n)
-#' y<-IARt.sample(n,0.9,st,sigma2=1,nu=3)
+#' y<-IARtsample(n,0.9,st,sigma2=1,nu=3)
 #' plot(st,y$y,type='l')
 #' hist(y$y,breaks=20)
-IARt.sample<-function(n,phi,st,sigma2=1,nu=3)
+IARtsample<-function(n,phi,st,sigma2=1,nu=3)
 {
   delta<-diff(st) #Times differences
   y <- vector("numeric", n)
