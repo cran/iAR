@@ -5,7 +5,7 @@
 #' @param y Array with the time series observations.
 #' @param st Array with the irregular observational times.
 #' @param delta Array with the measurements error standard deviations.
-#' @param include.mean logical; if true, the array y has zero mean; if false, y has a mean different from zero.
+#' @param zero.mean logical; if true, the array y has zero mean; if false, y has a mean different from zero.
 #' @param standarized logical; if true, the array y is standarized; if false, y contains the raw time series.
 #'
 #' @return A list with the following components:
@@ -71,10 +71,10 @@
 #' abline(h=sear,col='blue',lwd=2)
 #' abline(h=searf,col='green',lwd=2)
 #' abline(h=mean(nuhat3[-1]),col='black',lwd=2)
-IARloglik=function(y,st,delta=0,include.mean='FALSE',standarized='TRUE'){
+IARloglik=function(y,st,delta=0,zero.mean='TRUE',standarized='TRUE'){
   if(sum(delta)==0){
     delta=rep(0,length(y))}
-  out=optimize(IARphiloglik, interval=c(0,1), y=y, st=st, delta_input=delta, includeMean = include.mean, standarized = standarized)
+  out=optimize(IARphiloglik, interval=c(0,1), y=y, st=st, delta_input=delta, zeroMean = zero.mean, standarized = standarized)
   phi=out$minimum
   ll=out$objective
   return(list(phi=phi,loglik=ll))

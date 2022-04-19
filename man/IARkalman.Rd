@@ -4,7 +4,7 @@
 \alias{IARkalman}
 \title{Maximum Likelihood Estimation of the IAR Model via Kalman Recursions}
 \usage{
-IARkalman(y, st, delta = 0, zero.mean = "TRUE", standarized = "TRUE")
+IARkalman(y, st, delta = 0, zero.mean = "FALSE", standarized = "TRUE")
 }
 \arguments{
 \item{y}{Array with the time series observations.}

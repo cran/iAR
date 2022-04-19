@@ -33,27 +33,22 @@ using namespace arma;
 //' IARphigamma(x_input=c(0.9,1,1),y=y$y,st=st)
 // [[Rcpp::export]]
 double IARphigamma(arma::vec x_input, arma::vec y, arma::vec st) {
-  double x = x_input[0];
-  double mu = x_input[1];
-  double sigma = x_input[2];
+  double mu = arma::as_scalar(x_input.row(1));
+  double sigma = arma::as_scalar(x_input.row(2));
 
   int n = y.size();
   arma::vec d = arma::diff(st);
 
-  arma::vec xd(st.size(), fill::zeros);
-  for(int i = 0; i < st.size(); ++i) {
-    xd[i] = std::pow(x, d[i]);
+  arma::vec xd(n-1, fill::zeros);
+  for(int i = 0; i < n-1; ++i) {
+    xd[i] = std::pow(arma::as_scalar(x_input.row(0)), d[i]);
   }
 
   arma::vec yhat(n-1, fill::zeros);
-  for(int i = 0; i < (n-1); ++i) {
-    yhat[i] = mu + xd[i] * y[i];
-  }
+  yhat = mu + xd % y.rows(0, n-2);
 
   arma::vec gL(n-1, fill::zeros);
-  for(int i = 0; i < (n-1); ++i) {
-    gL[i] = sigma * (1 - std::pow(xd[i],2));
-  }
+  gL = sigma * (1 - arma::pow(xd,2));
 
   arma::vec beta(n-1, fill::zeros);
   beta=gL/yhat;

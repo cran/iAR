@@ -4,7 +4,7 @@
 \alias{IARphikalman}
 \title{Minus Log Likelihood of the IAR Model estimated via Kalman Recursions}
 \usage{
-IARphikalman(x, y, yerr, st, zeroMean = "TRUE", standarized = "TRUE")
+IARphikalman(x, y, yerr, st, zeroMean = "FALSE", standarized = "TRUE")
 }
 \arguments{
 \item{x}{A given phi coefficient of the IAR model.}

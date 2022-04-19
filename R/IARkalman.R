@@ -28,11 +28,11 @@
 #' y<-y$series
 #' phi=IARkalman(y=y,st=st)$phi
 #' print(phi)
-IARkalman<-function (y, st, delta=0,zero.mean='TRUE',standarized='TRUE')
+IARkalman<-function (y, st, delta=0,zero.mean='FALSE',standarized='TRUE')
 {
   if(sum(delta)==0){
     delta=rep(0,length(y))}
-  out = optimize(IARphikalman, interval = c(0, 1), y = y, st = st, yerr=delta,zeroMean=zero.mean,standarized=standarized)
+  out = optimize(IARphikalman, interval = c(0, 1), y = y, st = st, yerr=delta,zeroMean = zero.mean,standarized=standarized)
   phi = out$minimum
   ll = out$objective
   return(list(phi = phi, kalman = ll))

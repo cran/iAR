@@ -171,8 +171,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // IARphiloglik
-double IARphiloglik(double x, arma::vec y, arma::vec st, arma::vec delta_input, String includeMean, String standarized);
-RcppExport SEXP _iAR_IARphiloglik(SEXP xSEXP, SEXP ySEXP, SEXP stSEXP, SEXP delta_inputSEXP, SEXP includeMeanSEXP, SEXP standarizedSEXP) {
+double IARphiloglik(double x, arma::vec y, arma::vec st, arma::vec delta_input, String zeroMean, String standarized);
+RcppExport SEXP _iAR_IARphiloglik(SEXP xSEXP, SEXP ySEXP, SEXP stSEXP, SEXP delta_inputSEXP, SEXP zeroMeanSEXP, SEXP standarizedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -180,9 +180,9 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< arma::vec >::type y(ySEXP);
     Rcpp::traits::input_parameter< arma::vec >::type st(stSEXP);
     Rcpp::traits::input_parameter< arma::vec >::type delta_input(delta_inputSEXP);
-    Rcpp::traits::input_parameter< String >::type includeMean(includeMeanSEXP);
+    Rcpp::traits::input_parameter< String >::type zeroMean(zeroMeanSEXP);
     Rcpp::traits::input_parameter< String >::type standarized(standarizedSEXP);
-    rcpp_result_gen = Rcpp::wrap(IARphiloglik(x, y, st, delta_input, includeMean, standarized));
+    rcpp_result_gen = Rcpp::wrap(IARphiloglik(x, y, st, delta_input, zeroMean, standarized));
     return rcpp_result_gen;
 END_RCPP
 }

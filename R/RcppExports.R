@@ -375,7 +375,7 @@ IARphigamma <- function(x_input, y, st) {
 #' y<-y$series
 #' yerr=rep(0,100)
 #' IARphikalman(x=0.8,y=y,yerr=yerr,st=st)
-IARphikalman <- function(x, y, yerr, st, zeroMean = "TRUE", standarized = "TRUE") {
+IARphikalman <- function(x, y, yerr, st, zeroMean = "FALSE", standarized = "TRUE") {
     .Call(`_iAR_IARphikalman`, x, y, yerr, st, zeroMean, standarized)
 }
 
@@ -387,7 +387,7 @@ IARphikalman <- function(x, y, yerr, st, zeroMean = "TRUE", standarized = "TRUE"
 #' @param y Array with the time series observations.
 #' @param st Array with the irregular observational times.
 #' @param delta_input Array with the measurements error standard deviations.
-#' @param includeMean logical; if true, the array y has zero mean; if false, y has a mean different from zero.
+#' @param zeroMean logical; if true, the array y has zero mean; if false, y has a mean different from zero.
 #' @param standarized logical; if true, the array y was standarized; if false, y contains the raw data
 #'
 #' @return Value of the negative log likelihood evaluated in phi.
@@ -406,8 +406,8 @@ IARphikalman <- function(x, y, yerr, st, zeroMean = "TRUE", standarized = "TRUE"
 #' y<-IARsample(phi=0.99,st=st,n=100)
 #' y<-y$series
 #' IARphiloglik(x=0.8,y=y,st=st,delta_input=c(0))
-IARphiloglik <- function(x, y, st, delta_input, includeMean = "FALSE", standarized = "TRUE") {
-    .Call(`_iAR_IARphiloglik`, x, y, st, delta_input, includeMean, standarized)
+IARphiloglik <- function(x, y, st, delta_input, zeroMean = "FALSE", standarized = "TRUE") {
+    .Call(`_iAR_IARphiloglik`, x, y, st, delta_input, zeroMean, standarized)
 }
 
 #' Minus Log Likelihood IAR-T Model
