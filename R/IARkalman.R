@@ -6,7 +6,7 @@
 #' @param st Array with the irregular observational times.
 #' @param delta Array with the measurements error standard deviations.
 #' @param zero.mean logical; if true, the array y has zero mean; if false, y has a mean different from zero.
-#' @param standarized logical; if true, the array y is standarized; if false, y contains the raw time series
+#' @param standarized logical; if true, the array y is standarized; if false, y contains the raw time series.
 #'
 #' @return A list with the following components:
 #' \itemize{

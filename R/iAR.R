@@ -25,6 +25,6 @@
 #' @importFrom stats lm residuals
 #' @importFrom stats optimize var
 #' @importFrom stats pnorm rgamma
-#' @importFrom stats sd
+#' @importFrom stats sd na.omit
 #' @useDynLib iAR, .registration = TRUE
 NULL

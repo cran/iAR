@@ -20,7 +20,6 @@
 #' \item{fitted}{Estimation of the missing values of the BIAR process.}
 #' \item{ll}{Value of the negative log likelihood evaluated in the fitted missing values.}
 #' }
-
 #' @export
 #' @references
 #' \insertRef{Elorrieta_2021}{iAR}

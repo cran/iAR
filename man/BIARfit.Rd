@@ -28,6 +28,10 @@ A list with the following components:
 \item{innov.var}{ Estimated value of the innovation variance.}
 \item{fitted}{ Fitted values of the BIAR model.}
 \item{fitted.state}{ Fitted state values of the BIAR model.}
+\item{Lambda}{ Lambda value estimated by the BIAR model at the last time point.}
+\item{Theta}{ Theta array estimated by the BIAR model at the last time point.}
+\item{Sighat}{ Covariance matrix estimated by the BIAR model at the last time point.}
+\item{Qt}{ Covariance matrix of the state equation estimated by the BIAR model at the last time point.}
 }
 }
 \description{

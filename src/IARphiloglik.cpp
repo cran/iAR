@@ -33,8 +33,8 @@ using namespace arma;
 //' y<-y$series
 //' IARphiloglik(x=0.8,y=y,st=st,delta_input=c(0))
 // [[Rcpp::export]]
-double IARphiloglik(double x, arma::vec y, arma::vec st, arma::vec delta_input, String zeroMean = "FALSE", String standarized = "TRUE") {
-  int sigma = 1;
+double IARphiloglik(double x, arma::vec y, arma::vec st, arma::vec delta_input, String zeroMean = "TRUE", String standarized = "TRUE") {
+  double sigma = 1;
   int mu = 0;
 
   int n = y.size();
@@ -48,7 +48,7 @@ double IARphiloglik(double x, arma::vec y, arma::vec st, arma::vec delta_input, 
     sigma = arma::var(y);
   }
 
-  if(zeroMean == "TRUE") {
+  if(zeroMean == "FALSE") {
     mu = arma::mean(y);
   }
 
@@ -60,7 +60,7 @@ double IARphiloglik(double x, arma::vec y, arma::vec st, arma::vec delta_input, 
 
   arma::vec yhat(n-1, fill::zeros);
   for(int i = 0; i < n-1; ++i) {
-    yhat[i] = (mu + phi[i]) * (y[i] - mu);
+    yhat[i] = mu + phi[i] * (y[i] - mu);
   }
 
   double cte = (n/2) * std::log(2*datum::pi);

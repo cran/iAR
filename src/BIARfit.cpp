@@ -24,6 +24,10 @@ using namespace arma;
 //' \item{innov.var}{ Estimated value of the innovation variance.}
 //' \item{fitted}{ Fitted values of the BIAR model.}
 //' \item{fitted.state}{ Fitted state values of the BIAR model.}
+//' \item{Lambda}{ Lambda value estimated by the BIAR model at the last time point.}
+//' \item{Theta}{ Theta array estimated by the BIAR model at the last time point.}
+//' \item{Sighat}{ Covariance matrix estimated by the BIAR model at the last time point.}
+//' \item{Qt}{ Covariance matrix of the state equation estimated by the BIAR model at the last time point.}
 //' }
 //' @export
 //' @references
@@ -78,9 +82,12 @@ List BIARfit(arma::vec phiValues, arma::vec y1, arma::vec y2, arma::vec t, arma:
 
   arma::mat y = arma::join_vert(y1.t(), y2.t());
 
+  arma::mat theta;
+  arma::mat Lambda(2, 2, fill::zeros);
+  arma::mat Qt;
+
   for (int i = 0; i < (n-1); ++i) {
     arma::mat R = {{std::pow(yerr1[i+1], 2.0), 0}, {0, std::pow(yerr2[i+1], 2.0)}};
-    arma::mat Lambda(2, 2, fill::zeros);
     Lambda = G * sigmaHat * G.t() + R;
 
     if(det(Lambda) <= 0 || Lambda.has_nan()) {
@@ -100,8 +107,8 @@ List BIARfit(arma::vec phiValues, arma::vec y1, arma::vec y2, arma::vec t, arma:
     auto phi2 = 1 - phi2Mod;
 
     arma::mat M = phi2 * arma::eye(2,2);
-    arma::mat Qt = M * (Q - R);
-    arma::mat theta = F * sigmaHat * G.t();
+    Qt = M * (Q - R);
+    theta = F * sigmaHat * G.t();
     arma::mat aux = y.col(i) - (G * xhat.col(i));
 
     xhat.col(i + 1) = F * xhat.col(i) + theta * arma::inv(Lambda) * aux;
@@ -123,6 +130,10 @@ List BIARfit(arma::vec phiValues, arma::vec y1, arma::vec y2, arma::vec t, arma:
   output["innov.var"] = finalCov;
   output["fitted"] = yhat;
   output["fitted.state"] = xhat;
+  output["Sighat"] = sigmaHat;
+  output["Theta"] = theta;
+  output["Lambda"] = Lambda;
+  output["Qt"] = Qt;
 
   return output;
 }

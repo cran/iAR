@@ -36,7 +36,7 @@ using namespace arma;
 //' yerr=rep(0,100)
 //' IARphikalman(x=0.8,y=y,yerr=yerr,st=st)
 // [[Rcpp::export]]
-double IARphikalman(double x, arma::vec y, arma::vec yerr, arma::vec st, String zeroMean = "FALSE", String standarized = "TRUE") {
+double IARphikalman(double x, arma::vec y, arma::vec yerr, arma::vec st, String zeroMean = "TRUE", String standarized = "TRUE") {
   int n = y.size();
 
   arma::vec delta(n, fill::zeros);
@@ -47,7 +47,7 @@ double IARphikalman(double x, arma::vec y, arma::vec yerr, arma::vec st, String 
     sigmay = arma::var(y);
   }
 
-  if(zeroMean == "TRUE") {
+  if(zeroMean == "FALSE") {
     y = y - arma::mean(y);
   }
 

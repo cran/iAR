@@ -15,7 +15,7 @@ IARkalman(y, st, delta = 0, zero.mean = "FALSE", standarized = "TRUE")
 
 \item{zero.mean}{logical; if true, the array y has zero mean; if false, y has a mean different from zero.}
 
-\item{standarized}{logical; if true, the array y is standarized; if false, y contains the raw time series}
+\item{standarized}{logical; if true, the array y is standarized; if false, y contains the raw time series.}
 }
 \value{
 A list with the following components:

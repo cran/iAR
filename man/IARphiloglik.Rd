@@ -4,7 +4,7 @@
 \alias{IARphiloglik}
 \title{Minus Log Likelihood of the IAR Model}
 \usage{
-IARphiloglik(x, y, st, delta_input, zeroMean = "FALSE", standarized = "TRUE")
+IARphiloglik(x, y, st, delta_input, zeroMean = "TRUE", standarized = "TRUE")
 }
 \arguments{
 \item{x}{A given phi coefficient of the IAR model.}
