@@ -4,7 +4,7 @@
 \alias{BIARfit}
 \title{Fitted Values of BIAR model}
 \usage{
-BIARfit(phiValues, y1, y2, t, yerr1, yerr2, zeroMean = "TRUE")
+BIARfit(phiValues, y1, y2, t, yerr1, yerr2, zeroMean = TRUE)
 }
 \arguments{
 \item{phiValues}{An array with the parameters of the BIAR model. The elements of the array are, in order, the autocorrelation and the cross correlation parameter of the BIAR model.}
@@ -19,7 +19,7 @@ BIARfit(phiValues, y1, y2, t, yerr1, yerr2, zeroMean = "TRUE")
 
 \item{yerr2}{Array with the measurements error standard deviations of the second time series of the BIAR process.}
 
-\item{zeroMean}{logical; if true, the array y has zero mean; if false, y has a mean different from zero.}
+\item{zeroMean}{logical; if TRUE, the array y has zero mean; if FALSE, y has a mean different from zero.}
 }
 \value{
 A list with the following components:

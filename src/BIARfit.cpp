@@ -16,7 +16,7 @@ using namespace arma;
 //' @param t Array with the irregular observational times.
 //' @param yerr1 Array with the measurements error standard deviations of the first time series of the BIAR process.
 //' @param yerr2 Array with the measurements error standard deviations of the second time series of the BIAR process.
-//' @param zeroMean logical; if true, the array y has zero mean; if false, y has a mean different from zero.
+//' @param zeroMean logical; if TRUE, the array y has zero mean; if FALSE, y has a mean different from zero.
 //'
 //' @return A list with the following components:
 //' \itemize{
@@ -54,7 +54,7 @@ using namespace arma;
 //' yhat=predbiar$fitted
 //' }
 // [[Rcpp::export]]
-List BIARfit(arma::vec phiValues, arma::vec y1, arma::vec y2, arma::vec t, arma::vec yerr1, arma::vec yerr2, String zeroMean = "TRUE") {
+List BIARfit(arma::vec phiValues, arma::vec y1, arma::vec y2, arma::vec t, arma::vec yerr1, arma::vec yerr2, bool zeroMean = true) {
   List output;
   arma::cx_double phi(phiValues[0], phiValues[1]);
 
@@ -63,7 +63,7 @@ List BIARfit(arma::vec phiValues, arma::vec y1, arma::vec y2, arma::vec t, arma:
     return output;
   }
 
-  if(zeroMean == "FALSE") {
+  if(zeroMean == FALSE) {
     y1 = y1 - arma::mean(y1);
     y2 = y2 - arma::mean(y2);
   }

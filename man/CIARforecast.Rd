@@ -4,7 +4,7 @@
 \alias{CIARforecast}
 \title{Forecast from CIAR model}
 \usage{
-CIARforecast(phiR, phiI, y1, st, nAhead)
+CIARforecast(phiR, phiI, y1, st, tAhead)
 }
 \arguments{
 \item{phiR}{Real part of the phi coefficient of CIAR model.}
@@ -13,15 +13,15 @@ CIARforecast(phiR, phiI, y1, st, nAhead)
 
 \item{y1}{Array with the time series observations.}
 
-\item{st}{Array with the irregular observational times.}
+\item{st}{Array with the observational times.}
 
-\item{nAhead}{The number of steps ahead for forecast is required.}
+\item{tAhead}{The time ahead for which the forecast is required.}
 }
 \value{
 A list with the following components:
 \itemize{
 \item{fitted}{ Fitted values by the CIAR model.}
-\item{forecast}{ Point Forecasts in the n.ahead times.}
+\item{forecast}{ Point forecast in the time ahead required.}
 \item{Lambda}{ Lambda value estimated by the CIAR model at the last time point.}
 \item{Sighat}{ Covariance matrix estimated by the CIAR model at the last time point.}
 }
@@ -43,11 +43,10 @@ ytr=y1[1:p]
 yte=y1[(p+1):n]
 str=st[1:p]
 ste=st[(p+1):n]
-n.ahead=ste-str[p]
+tahead=ste-str[p]
 
-final<-matrix(0,length(n.ahead),4)
 ciar=CIARkalman(y=ytr,t=str)
-forCIAR<-CIARforecast(ciar$phiR,ciar$phiI,ytr,str,nAhead=n.ahead)
+forCIAR<-CIARforecast(ciar$phiR,ciar$phiI,ytr,str,tAhead=tahead)
 }
 \references{
 \insertRef{Elorrieta_2019}{iAR}

@@ -8,8 +8,8 @@ CIARkalman(
   y,
   t,
   delta = 0,
-  zero.mean = "TRUE",
-  standarized = "TRUE",
+  zero.mean = TRUE,
+  standardized = TRUE,
   c = 1,
   niter = 10,
   seed = 1234
@@ -22,9 +22,9 @@ CIARkalman(
 
 \item{delta}{Array with the measurements error standard deviations.}
 
-\item{zero.mean}{logical; if true, the array y has zero mean; if false, y has a mean different from zero.}
+\item{zero.mean}{logical; if TRUE, the array y has zero mean; if FALSE, y has a mean different from zero.}
 
-\item{standarized}{logical; if true, the array y is standarized; if false, y contains the raw time series.}
+\item{standardized}{logical; if TRUE, the array y is standardized; if FALSE, y contains the raw time series.}
 
 \item{c}{Nuisance parameter corresponding to the variance of the imaginary part.}
 

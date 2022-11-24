@@ -28,7 +28,7 @@
 #' model<-IARt(y$y, st=st)
 #' phi=model$phi
 #' sigmaest=model$sigma
-IARt<-function (y, st,nu=3) 
+IARt<-function (y, st,nu=3)
 {
   aux<-1e10
   value<-1e10
@@ -37,7 +37,7 @@ IARt<-function (y, st,nu=3)
   {
     phi=runif(1)
     sigma=var(y)*runif(1)
-    optim<-nlminb(start=c(phi,sigma),objective=IARphit,y=y,st=st,nu=nu,lower=c(0,0.0001),upper=c(0.9999,2*var(y)))
+    optim<-nlminb(start=c(phi,sigma),objective=IARphit,y=y,st=st,nu=nu,yest=0,lower=c(0,0.0001),upper=c(0.9999,2*var(y)))
     value<-optim$objective
     if(aux>value)
     {

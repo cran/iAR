@@ -4,9 +4,11 @@
 \alias{IARphit}
 \title{Minus Log Likelihood IAR-T Model}
 \usage{
-IARphit(x, y, st, nu = 3)
+IARphit(yest, x, y, st, nu = 3)
 }
 \arguments{
+\item{yest}{The estimate of a missing value in the time series. This function recognizes a missing value with a NA. If the time series does not have a missing value, this value does not affect the computation of the likelihood.}
+
 \item{x}{An array with the parameters of the IAR-T model. The first element of the array corresponding to the phi parameter and the second element to the scale parameter sigma}
 
 \item{y}{Array with the time series observations}
@@ -24,13 +26,13 @@ This function return the negative log likelihood of the IAR-T given specific val
 \examples{
 n=300
 set.seed(6714)
-st<-gentime(n) #Unequally spaced times
+st<-gentime(n)
 y<-IARtsample(n,0.9,st,sigma2=1,nu=3)
-IARphit(x=c(0.9,1),y=y$y,st=st)
+IARphit(x=c(0.9,1),y=y$y,st=st,yest=0)
 }
 \references{
 \insertRef{Eyheramendy_2018}{iAR}
 }
 \seealso{
-\code{\link{gentime}}, \code{\link{IARgsample}}
+\code{\link{gentime}}, \code{\link{IARtsample}}
 }

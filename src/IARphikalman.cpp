@@ -16,8 +16,9 @@ using namespace arma;
 //' @param y Array with the time series observations.
 //' @param yerr Array with the measurements error standard deviations.
 //' @param st Array with the irregular observational times.
-//' @param zeroMean logical; if true, the array y has zero mean; if false, y has a mean different from zero.
-//' @param standarized logical; if true, the array y is standarized; if false, y contains the raw time series.
+//' @param zeroMean logical; if TRUE, the array y has zero mean; if FALSE, y has a mean different from zero.
+//' @param standardized logical; if TRUE, the array y is standardized; if FALSE, y contains the raw time series.
+//' @param yest The estimate of a missing value in the time series. This function recognizes a missing value with a NA. If the time series does not have a missing value, this value does not affect the computation of the likelihood.
 //'
 //' @return Value of the negative log likelihood evaluated in phi.
 //' @export
@@ -34,23 +35,33 @@ using namespace arma;
 //' y<-IARsample(phi=0.99,st=st,n=100)
 //' y<-y$series
 //' yerr=rep(0,100)
-//' IARphikalman(x=0.8,y=y,yerr=yerr,st=st)
+//' IARphikalman(x=0.8,y=y,yerr=yerr,st=st,yest=0)
 // [[Rcpp::export]]
-double IARphikalman(double x, arma::vec y, arma::vec yerr, arma::vec st, String zeroMean = "TRUE", String standarized = "TRUE") {
+double IARphikalman(arma::vec yest,double x, arma::vec y, arma::vec yerr, arma::vec st, bool zeroMean = true, bool standardized = true) {
+  arma::vec y_copy = y;
+
+  //Removing NA elements before join them
+  uvec y_NA_indexes = arma::find_nonfinite(y);
+
+  if(y_NA_indexes.size() > 0) {
+    y_copy.shed_rows(y_NA_indexes);
+  }
+
+  double sigmay = 1.0;
+
+  if(zeroMean == false) {
+    y = y - arma::mean(y_copy);
+  }
+
+
+  if(standardized == false) {
+    sigmay = arma::var(y_copy);
+  }
+
   int n = y.size();
 
   arma::vec delta(n, fill::zeros);
   arma::mat xhat(1, n, fill::zeros);
-
-  double sigmay = 1;
-  if(standarized == "FALSE") {
-    sigmay = arma::var(y);
-  }
-
-  if(zeroMean == "FALSE") {
-    y = y - arma::mean(y);
-  }
-
   arma::vec Sighat(1, 1, fill::zeros);
 
   Sighat[0] = sigmay;
@@ -91,10 +102,20 @@ double IARphikalman(double x, arma::vec y, arma::vec yerr, arma::vec st, String 
       sumLambda = sumLambda + arma::as_scalar(arma::log(Lambda));
       Theta = F * Sighat * G.t();
 
-      arma::vec aux = y[i] - (G % xhat.col(i));
+      arma::vec yaux = y.row(i);
+      arma::mat innov;
 
-      sumError = sumError + arma::as_scalar((arma::pow(aux, 2)/Lambda));
-      xhat.col(i + 1) = F * xhat.col(i) + Theta * arma::inv(Lambda) * aux;
+      innov = yaux - G * xhat.col(i);
+
+      if(yaux.has_nan() == true) {
+        arma::mat temp(1, 1, fill::zeros);
+        temp.row(0) = yest;
+        innov = temp - G * xhat.col(i);
+      }
+
+
+      sumError = sumError + arma::as_scalar((arma::pow(innov, 2)/Lambda));
+      xhat.col(i + 1) = F * xhat.col(i) + Theta * arma::inv(Lambda) * innov;
       Sighat = F * Sighat * F.t() + Qt - Theta * arma::inv(Lambda) * Theta.t();
     }
 

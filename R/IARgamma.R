@@ -40,7 +40,7 @@ IARgamma<-function(y, st)
     phi=runif(1)
     mu=mean(y)*runif(1)
     sigma=var(y)*runif(1)
-    optim<-nlminb(start=c(phi,mu,sigma),objective=IARphigamma,y=y,st=st,lower=c(0,0.0001,0.0001),upper=c(0.9999,mean(y),var(y)))
+    optim<-nlminb(start=c(phi,mu,sigma),objective=IARphigamma,y=y,st=st,yest=0,lower=c(0,0.0001,0.0001),upper=c(0.9999,mean(y),var(y)))
     value<-optim$objective
     if(aux>value)
     {

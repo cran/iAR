@@ -56,7 +56,7 @@ BIARkalman<-function (y1, y2, t, delta1 = 0, delta2 = 0, zero.mean = "TRUE", nit
     phiI = 2 * runif(1) - 1
     if (Mod(complex(1, real = phiR, imaginary = phiI)) < 1) {
       optim <- nlminb(start = c(phiR, phiI), objective = BIARphikalman,
-                      y1 = y1,y2 = y2, t = t, yerr1 = delta1, yerr2=delta2, lower	= c(-1, -1), upper = c(1, 1))
+                      y1 = y1,y2 = y2, t = t, yerr1 = delta1, yerr2=delta2,yest=c(0,0),lower	= c(-1, -1), upper = c(1, 1))
       value <- optim$objective
     }
     if (aux > value) {

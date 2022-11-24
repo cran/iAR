@@ -14,7 +14,7 @@ using namespace arma;
 //' @param phiValues An array with the parameters of the CIAR model. The elements of the array are, in order, the real and the imaginary part of the phi parameter of the CIAR model.
 //' @param y Array with the time series observations.
 //' @param t Array with the irregular observational times.
-//' @param standarized logical; if true, the array y is standarized; if false, y contains the raw time series
+//' @param standardized logical; if TRUE, the array y is standardized; if FALSE, y contains the raw time series
 //' @param c Nuisance parameter corresponding to the variance of the imaginary part.
 //'
 //' @return A list with the following components:
@@ -45,7 +45,7 @@ using namespace arma;
 //' ciar
 //' yhat=CIARfit(phiValues=c(ciar$phiR,ciar$phiI),y=y1,t=st)
 // [[Rcpp::export]]
-List CIARfit(arma::vec phiValues, arma::vec y, arma::vec t, String standarized="TRUE", double c=1) {
+List CIARfit(arma::vec phiValues, arma::vec y, arma::vec t, bool standardized=true, double c=1) {
   List output;
 
   arma::cx_double phi(phiValues[0], phiValues[1]);
@@ -55,7 +55,7 @@ List CIARfit(arma::vec phiValues, arma::vec y, arma::vec t, String standarized="
   }
 
   double sigmaY = 1;
-  if(standarized == "FALSE") {
+  if(standardized == false) {
     sigmaY = arma::var(y);
   }
 

@@ -15,6 +15,7 @@ using namespace arma;
 //' @param x_input An array with the parameters of the IAR-Gamma model. The first element of the array corresponding to the phi parameter, the second to the level parameter mu, and the last one to the scale parameter sigma.
 //' @param y Array with the time series observations.
 //' @param st Array with the irregular observational times.
+//' @param yest The estimate of a missing value in the time series. This function recognizes a missing value with a NA. If the time series does not have a missing value, this value does not affect the computation of the likelihood.
 //'
 //' @return Value of the negative log likelihood evaluated in phi, mu and sigma.
 //' @export
@@ -30,9 +31,12 @@ using namespace arma;
 //' set.seed(6714)
 //' st<-gentime(n)
 //' y<-IARgsample(phi=0.9,st=st,n=n,sigma2=1,mu=1)
-//' IARphigamma(x_input=c(0.9,1,1),y=y$y,st=st)
+//' IARphigamma(x_input=c(0.9,1,1),y=y$y,st=st,yest=0)
 // [[Rcpp::export]]
-double IARphigamma(arma::vec x_input, arma::vec y, arma::vec st) {
+double IARphigamma(arma::vec yest,arma::vec x_input, arma::vec y, arma::vec st) {
+  if(y.has_nan() == true) {
+     y.elem(arma::find_nonfinite(y))=yest;
+  }
   double mu = arma::as_scalar(x_input.row(1));
   double sigma = arma::as_scalar(x_input.row(2));
 

@@ -20,10 +20,10 @@
 #' @import Rcpp ggplot2
 #' @importFrom Rdpack reprompt
 #' @importFrom stats nlminb rexp
-#' @importFrom stats rnorm runif
+#' @importFrom stats rnorm runif qnorm
 #' @importFrom stats rt anova
 #' @importFrom stats lm residuals
-#' @importFrom stats optimize var
+#' @importFrom stats optimize optim var
 #' @importFrom stats pnorm rgamma
 #' @importFrom stats sd na.omit
 #' @useDynLib iAR, .registration = TRUE

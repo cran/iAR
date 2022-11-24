@@ -11,6 +11,12 @@
 using namespace Rcpp;
 using namespace arma;
 
+void uvec_push(arma::uvec & v, unsigned int value) {
+  arma::uvec av(1);
+  av.at(0) = value;
+  v.insert_rows(v.n_rows, av.row(0));
+}
+
 //' Minus Log Likelihood of the BIAR Model
 //'
 //' This function return the negative log likelihood of the BIAR process given specific values of phiR and phiI
@@ -22,7 +28,8 @@ using namespace arma;
 //' @param t Array with the irregular observational times.
 //' @param yerr1 Array with the measurements error standard deviations of the first time series of the BIAR process.
 //' @param yerr2 Array with the measurements error standard deviations of the second time series of the BIAR process.
-//' @param zeroMean logical; if true, the array y has zero mean; if false, y has a mean different from zero.
+//' @param zeroMean logical; if TRUE, the array y has zero mean; if FALSE, y has a mean different from zero.
+//' @param yest An array with the estimate of a missing value in one or both time series of the bivariate process. This function recognizes a missing value with a NA. If the bivariate time series does not have a missing value, this value does not affect the computation of the likelihood.
 //'
 //' @return Value of the negative log likelihood evaluated in phiR and phiI.
 //' @export
@@ -43,9 +50,9 @@ using namespace arma;
 //' y2=y[2,]
 //' yerr1=rep(0,n)
 //' yerr2=rep(0,n)
-//' BIARphikalman(phiValues=c(0.8,0.2),y1=y1,y2=y2,t=st,yerr1=yerr1,yerr2=yerr2)
+//' BIARphikalman(phiValues=c(0.8,0.2),y1=y1,y2=y2,t=st,yerr1=yerr1,yerr2=yerr2,yest=c(0,0))
 // [[Rcpp::export]]
-double BIARphikalman(arma::vec phiValues, arma::vec y1, arma::vec y2, arma::vec t, arma::vec yerr1, arma::vec yerr2, String zeroMean = "TRUE") {
+double BIARphikalman(arma::vec yest,arma::vec phiValues, arma::vec y1, arma::vec y2, arma::vec t, arma::vec yerr1, arma::vec yerr2, bool zeroMean = true) {
   arma::cx_double phi(phiValues[0], phiValues[1]);
 
   double phiMod = std::sqrt(std::pow(phi.real(), 2.0) + std::pow(phi.imag(), 2.0));
@@ -53,13 +60,45 @@ double BIARphikalman(arma::vec phiValues, arma::vec y1, arma::vec y2, arma::vec 
     return 1e10;
   }
 
-  if(zeroMean == "FALSE") {
-    y1 = y1 - arma::mean(y1);
-    y2 = y2 - arma::mean(y2);
+  arma::vec y1_copy = y1;
+  arma::vec y2_copy = y2;
+
+  //Removing NA elements before join them
+  uvec y1_NA_indexes = arma::find_nonfinite(y1);
+  uvec y2_NA_indexes = arma::find_nonfinite(y2);
+
+  if(y1_NA_indexes.size() > 0 && y2_NA_indexes.size() == 0) {
+    y1_copy.shed_rows(y1_NA_indexes);
+    y2_copy.shed_rows(y1_NA_indexes);
+  }
+
+  if(y1_NA_indexes.size() == 0 && y2_NA_indexes.size() > 0) {
+    y1_copy.shed_rows(y2_NA_indexes);
+    y2_copy.shed_rows(y2_NA_indexes);
+  }
+
+  if(y1_NA_indexes.size() > 0 && y2_NA_indexes.size() > 0) {
+    uvec combination = join_cols(y1_NA_indexes, y2_NA_indexes);
+    uvec all_joined;
+    std::set<int> uniqueSet( combination.begin(), combination.end() );
+
+    for(auto elem: uniqueSet) {
+      uvec_push(all_joined, elem);
+    }
+
+    y1_copy.shed_rows(all_joined);
+    y2_copy.shed_rows(all_joined);
+  }
+
+  arma::mat y0 = arma::join_horiz(y1_copy, y2_copy);
+  arma::mat sigmaY = arma::cov(y0);
+
+  if(zeroMean == false) {
+    y1 = y1 - arma::mean(y1_copy);
+    y2 = y2 - arma::mean(y2_copy);
   }
 
   int n = y1.size();
-  arma::mat sigmaY = arma::cov(arma::join_horiz(y1, y2));
   arma::mat sigmaHat = sigmaY * arma::eye(2,2);
   arma::mat xhat(2, n, fill::zeros);
   arma::vec delta = arma::diff(t);
@@ -100,8 +139,32 @@ double BIARphikalman(arma::vec phiValues, arma::vec y1, arma::vec y2, arma::vec 
 
     sumLambda = sumLambda + log(arma::det(Lambda));
     arma::mat theta = F * sigmaHat * G.t();
+    arma::vec yaux = y.col(i);
 
-    arma::mat aux = y.col(i) - (G * xhat.col(i));
+    arma::mat innov;
+
+    if(yaux.row(0).has_nan() == true && yaux.row(1).has_nan() == true) {
+        arma::mat temp(2, 1, fill::zeros);
+        temp.row(0) = yest;
+        temp.row(1) = yest;
+
+        innov = temp - G * xhat.col(i);
+    } else if(yaux.row(0).has_nan() == true && yaux.row(1).has_nan() == false) {
+      arma::mat temp(2, 1, fill::zeros);
+      temp.row(0) = yest;
+      temp.row(1) = yaux.row(1);
+
+      innov = temp - G * xhat.col(i);
+    } else if(yaux.row(0).has_nan() == false && yaux.row(1).has_nan() == true) {
+      arma::mat temp(2, 1, fill::zeros);
+      temp.row(0) = yaux.row(0);
+      temp.row(1) = yest;
+      innov = temp - G * xhat.col(i);
+    } else {
+      innov = yaux - G * xhat.col(i);
+    }
+
+    arma::mat aux = innov;
     sumError = sumError + as_scalar(aux.t() * arma::inv(Lambda) * aux);
 
     xhat.col(i + 1) = F * xhat.col(i) + theta * arma::inv(Lambda) * aux;

@@ -4,7 +4,7 @@
 \alias{IARphiloglik}
 \title{Minus Log Likelihood of the IAR Model}
 \usage{
-IARphiloglik(x, y, st, delta_input, zeroMean = "TRUE", standarized = "TRUE")
+IARphiloglik(x, y, st, delta_input, zeroMean = TRUE, standardized = TRUE)
 }
 \arguments{
 \item{x}{A given phi coefficient of the IAR model.}
@@ -15,9 +15,9 @@ IARphiloglik(x, y, st, delta_input, zeroMean = "TRUE", standarized = "TRUE")
 
 \item{delta_input}{Array with the measurements error standard deviations.}
 
-\item{zeroMean}{logical; if true, the array y has zero mean; if false, y has a mean different from zero.}
+\item{zeroMean}{logical; if TRUE, the array y has zero mean; if FALSE, y has a mean different from zero.}
 
-\item{standarized}{logical; if true, the array y was standarized; if false, y contains the raw data}
+\item{standardized}{logical; if TRUE, the array y was standardized; if FALSE, y contains the raw data}
 }
 \value{
 Value of the negative log likelihood evaluated in phi.

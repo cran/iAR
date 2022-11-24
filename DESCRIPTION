@@ -1,8 +1,8 @@
 Package: iAR
 Type: Package
 Title: Irregularly Observed Autoregressive Models
-Version: 1.1.0
-Date: 2022-07-11
+Version: 1.2.0
+Date: 2022-11-24
 Authors@R: c(
     person("Elorrieta", "Felipe", email = "felipe.elorrieta@usach.cl", role = c("aut","cre")),
     person("Ojeda", "Cesar", email = "cesar.ojeda@correounivalle.edu.co", role = "aut"),
@@ -21,10 +21,10 @@ RoxygenNote: 7.1.2
 LazyData: true
 Encoding: UTF-8
 NeedsCompilation: yes
-Packaged: 2022-07-11 22:13:58 UTC; felo
+Packaged: 2022-11-24 18:16:12 UTC; felo
 Author: Elorrieta Felipe [aut, cre],
   Ojeda Cesar [aut],
   Eyheramendy Susana [aut],
   Palma Wilfredo [aut]
 Repository: CRAN
-Date/Publication: 2022-07-11 23:10:07 UTC
+Date/Publication: 2022-11-24 23:30:07 UTC

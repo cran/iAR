@@ -5,8 +5,8 @@
 #' @param y Array with the time series observations.
 #' @param t Array with the irregular observational times.
 #' @param delta Array with the measurements error standard deviations.
-#' @param zero.mean logical; if true, the array y has zero mean; if false, y has a mean different from zero.
-#' @param standarized logical; if true, the array y is standarized; if false, y contains the raw time series.
+#' @param zero.mean logical; if TRUE, the array y has zero mean; if FALSE, y has a mean different from zero.
+#' @param standardized logical; if TRUE, the array y is standardized; if FALSE, y contains the raw time series.
 #' @param c Nuisance parameter corresponding to the variance of the imaginary part.
 #' @param niter Number of iterations in which the function nlminb will be repeated.
 #' @param seed a single value, interpreted as the seed of the random process.
@@ -36,7 +36,7 @@
 #' ciar=CIARkalman(y=y1,t=st)
 #' ciar
 #' Mod(complex(real=ciar$phiR,imaginary=ciar$phiI))
-CIARkalman<-function(y,t,delta=0,zero.mean='TRUE',standarized='TRUE',c=1,niter=10,seed=1234)
+CIARkalman<-function(y,t,delta=0,zero.mean=TRUE,standardized=TRUE,c=1,niter=10,seed=1234)
 {
   set.seed(seed)
   aux<-1e10
@@ -51,8 +51,8 @@ CIARkalman<-function(y,t,delta=0,zero.mean='TRUE',standarized='TRUE',c=1,niter=1
     if(Mod(complex(1,real=phiR,imaginary=phiI))<1)
     {
       optim <- nlminb(start=c(phiR,phiI), objective=CIARphikalman, y=y, t=t,
-                      yerr=delta, zeroMean=zero.mean, standarized=standarized,
-                      c=c, lower=c(-1,-1), upper=c(1,1))
+                      yerr=delta, zeroMean=zero.mean, standardized=standardized,
+                      c=c,yest=0, lower=c(-1,-1), upper=c(1,1))
 
       value<-optim$objective
     }

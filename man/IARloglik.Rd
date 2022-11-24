@@ -4,7 +4,7 @@
 \alias{IARloglik}
 \title{Maximum Likelihood Estimation of the IAR Model}
 \usage{
-IARloglik(y, st, delta = 0, zero.mean = "TRUE", standarized = "TRUE")
+IARloglik(y, st, delta = 0, zero.mean = TRUE, standardized = TRUE)
 }
 \arguments{
 \item{y}{Array with the time series observations.}
@@ -13,9 +13,9 @@ IARloglik(y, st, delta = 0, zero.mean = "TRUE", standarized = "TRUE")
 
 \item{delta}{Array with the measurements error standard deviations.}
 
-\item{zero.mean}{logical; if true, the array y has zero mean; if false, y has a mean different from zero.}
+\item{zero.mean}{logical; if TRUE, the array y has zero mean; if FALSE, y has a mean different from zero.}
 
-\item{standarized}{logical; if true, the array y is standarized; if false, y contains the raw time series.}
+\item{standardized}{logical; if TRUE, the array y is standardized; if FALSE, y contains the raw time series.}
 }
 \value{
 A list with the following components:

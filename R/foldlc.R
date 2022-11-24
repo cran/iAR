@@ -12,7 +12,7 @@
 #' data(clcep)
 #' f1=0.060033386
 #' foldlc(clcep,f1)
-foldlc=function (file, f1, plot=T)
+foldlc=function (file, f1, plot=TRUE)
 {
   mycurve = file
   t = mycurve[, 1]
@@ -28,13 +28,13 @@ foldlc=function (file, f1, plot=T)
   dat1 <- cbind(fold, m, merr)
   dat1 <- as.data.frame(dat1)
   out=NULL
-  if(plot==T)
+  if(plot==TRUE)
     out <- ggplot(dat1, aes(x = fold, y = m)) + geom_errorbar(aes(ymin = m -
                                                                     merr, ymax = m + merr), width = 0.01, col = "red") +
     geom_point() + scale_y_reverse() + xlab("") + ylab("") +
     theme_bw() + theme(plot.title = element_text(face = "bold",
                                                  size = 20), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
                        panel.background = element_blank())
-  dat1<-dat1[order(dat1[,1],decreasing=T),]
+  dat1<-dat1[order(dat1[,1],decreasing=TRUE),]
   return(list(folded=dat1,plot=out))
 }

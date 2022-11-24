@@ -13,13 +13,13 @@ using namespace arma;
 //' @param phiR Real part of the phi coefficient of CIAR model.
 //' @param phiI Imaginary part of the phi coefficient of CIAR model.
 //' @param y1 Array with the time series observations.
-//' @param st Array with the irregular observational times.
-//' @param nAhead The number of steps ahead for forecast is required.
+//' @param st Array with the observational times.
+//' @param tAhead The time ahead for which the forecast is required.
 //'
 //' @return A list with the following components:
 //' \itemize{
 //' \item{fitted}{ Fitted values by the CIAR model.}
-//' \item{forecast}{ Point Forecasts in the n.ahead times.}
+//' \item{forecast}{ Point forecast in the time ahead required.}
 //' \item{Lambda}{ Lambda value estimated by the CIAR model at the last time point.}
 //' \item{Sighat}{ Covariance matrix estimated by the CIAR model at the last time point.}
 //' }
@@ -46,13 +46,12 @@ using namespace arma;
 //' yte=y1[(p+1):n]
 //' str=st[1:p]
 //' ste=st[(p+1):n]
-//' n.ahead=ste-str[p]
+//' tahead=ste-str[p]
 //'
-//' final<-matrix(0,length(n.ahead),4)
 //' ciar=CIARkalman(y=ytr,t=str)
-//' forCIAR<-CIARforecast(ciar$phiR,ciar$phiI,ytr,str,nAhead=n.ahead)
+//' forCIAR<-CIARforecast(ciar$phiR,ciar$phiI,ytr,str,tAhead=tahead)
 // [[Rcpp::export]]
-List CIARforecast(double phiR, double phiI, arma::vec y1, arma::vec st, double nAhead) {
+List CIARforecast(double phiR, double phiI, arma::vec y1, arma::vec st, double tAhead) {
   List output;
 
   arma::cx_double phi(phiR, phiI);
@@ -81,8 +80,8 @@ List CIARforecast(double phiR, double phiI, arma::vec y1, arma::vec st, double n
 
   double psi = -acos(phi.real()/phiMod);
 
-  double phi2R = pow(phiMod, nAhead) * cos(nAhead * psi);
-  double phi2I = pow(phiMod, nAhead) * sin(nAhead * psi);
+  double phi2R = pow(phiMod, tAhead) * cos(tAhead * psi);
+  double phi2I = pow(phiMod, tAhead) * sin(tAhead * psi);
 
   double yhat1 = 0;
   arma::mat xhat1(2, 1, fill::zeros);

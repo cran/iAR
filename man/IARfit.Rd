@@ -4,7 +4,7 @@
 \alias{IARfit}
 \title{Fitted Values of IAR model}
 \usage{
-IARfit(phi, y, st, standarized = T, include.mean = F)
+IARfit(phi, y, st, standardized = TRUE, zero.mean = TRUE)
 }
 \arguments{
 \item{phi}{Estimated phi parameter by the iAR model.}
@@ -13,9 +13,9 @@ IARfit(phi, y, st, standarized = T, include.mean = F)
 
 \item{st}{Array with the irregular observational times.}
 
-\item{standarized}{logical; if true, the array y is standarized; if false, y contains the raw time series}
+\item{standardized}{logical; if TRUE, the array y is standardized; if FALSE, y contains the raw time series}
 
-\item{include.mean}{logical; if true, the array y has zero mean; if false, y has a mean different from zero.}
+\item{zero.mean}{logical; if TRUE, the array y has zero mean; if FALSE, y has a mean different from zero.}
 }
 \value{
 Fitted values of the iAR model

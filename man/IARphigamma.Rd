@@ -4,9 +4,11 @@
 \alias{IARphigamma}
 \title{Minus Log Likelihood IAR-Gamma Model}
 \usage{
-IARphigamma(x_input, y, st)
+IARphigamma(yest, x_input, y, st)
 }
 \arguments{
+\item{yest}{The estimate of a missing value in the time series. This function recognizes a missing value with a NA. If the time series does not have a missing value, this value does not affect the computation of the likelihood.}
+
 \item{x_input}{An array with the parameters of the IAR-Gamma model. The first element of the array corresponding to the phi parameter, the second to the level parameter mu, and the last one to the scale parameter sigma.}
 
 \item{y}{Array with the time series observations.}
@@ -24,7 +26,7 @@ n=100
 set.seed(6714)
 st<-gentime(n)
 y<-IARgsample(phi=0.9,st=st,n=n,sigma2=1,mu=1)
-IARphigamma(x_input=c(0.9,1,1),y=y$y,st=st)
+IARphigamma(x_input=c(0.9,1,1),y=y$y,st=st,yest=0)
 }
 \references{
 \insertRef{Eyheramendy_2018}{iAR}

@@ -4,7 +4,7 @@
 \alias{CIARfit}
 \title{Fitted Values of CIAR model}
 \usage{
-CIARfit(phiValues, y, t, standarized = "TRUE", c = 1)
+CIARfit(phiValues, y, t, standardized = TRUE, c = 1)
 }
 \arguments{
 \item{phiValues}{An array with the parameters of the CIAR model. The elements of the array are, in order, the real and the imaginary part of the phi parameter of the CIAR model.}
@@ -13,7 +13,7 @@ CIARfit(phiValues, y, t, standarized = "TRUE", c = 1)
 
 \item{t}{Array with the irregular observational times.}
 
-\item{standarized}{logical; if true, the array y is standarized; if false, y contains the raw time series}
+\item{standardized}{logical; if TRUE, the array y is standardized; if FALSE, y contains the raw time series}
 
 \item{c}{Nuisance parameter corresponding to the variance of the imaginary part.}
 }

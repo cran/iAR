@@ -4,9 +4,11 @@
 \alias{CIARphikalman}
 \title{Minus Log Likelihood of the CIAR Model}
 \usage{
-CIARphikalman(x, y, t, yerr, zeroMean = "TRUE", standarized = "TRUE", c = 1)
+CIARphikalman(yest, x, y, t, yerr, zeroMean = TRUE, standardized = TRUE, c = 1)
 }
 \arguments{
+\item{yest}{The estimate of a missing value in the time series. This function recognizes a missing value with a NA. If the time series does not have a missing value, this value does not affect the computation of the likelihood.}
+
 \item{x}{An array with the parameters of the CIAR model. The elements of the array are, in order, the real (phiR) and the imaginary (phiI) part of the coefficient of CIAR model.}
 
 \item{y}{Array with the time series observations.}
@@ -15,9 +17,9 @@ CIARphikalman(x, y, t, yerr, zeroMean = "TRUE", standarized = "TRUE", c = 1)
 
 \item{yerr}{Array with the measurements error standard deviations.}
 
-\item{zeroMean}{logical; if true, the array y has zero mean; if false, y has a mean different from zero.}
+\item{zeroMean}{logical; if TRUE, the array y has zero mean; if FALSE, y has a mean different from zero.}
 
-\item{standarized}{logical; if true, the array y is standarized; if false, y contains the raw time series.}
+\item{standardized}{logical; if TRUE, the array y is standardized; if FALSE, y contains the raw time series.}
 
 \item{c}{Nuisance parameter corresponding to the variance of the imaginary part.}
 }
@@ -34,7 +36,7 @@ st<-gentime(n)
 x=CIARsample(n=n,phiR=0.9,phiI=0,st=st,c=1)
 y=x$y
 yerr=rep(0,n)
-CIARphikalman(x=c(0.8,0),y=y,t=st,yerr=yerr)
+CIARphikalman(x=c(0.8,0),y=y,t=st,yerr=yerr,yest=0)
 }
 \references{
 \insertRef{Elorrieta_2019}{iAR}

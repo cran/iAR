@@ -13,8 +13,8 @@ using namespace arma;
 //' @param y Array with the time series observations.
 //' @param st Array with the irregular observational times.
 //' @param delta_input Array with the measurements error standard deviations.
-//' @param zeroMean logical; if true, the array y has zero mean; if false, y has a mean different from zero.
-//' @param standarized logical; if true, the array y was standarized; if false, y contains the raw data
+//' @param zeroMean logical; if TRUE, the array y has zero mean; if FALSE, y has a mean different from zero.
+//' @param standardized logical; if TRUE, the array y was standardized; if FALSE, y contains the raw data
 //'
 //' @return Value of the negative log likelihood evaluated in phi.
 //' @export
@@ -33,7 +33,7 @@ using namespace arma;
 //' y<-y$series
 //' IARphiloglik(x=0.8,y=y,st=st,delta_input=c(0))
 // [[Rcpp::export]]
-double IARphiloglik(double x, arma::vec y, arma::vec st, arma::vec delta_input, String zeroMean = "TRUE", String standarized = "TRUE") {
+double IARphiloglik(double x, arma::vec y, arma::vec st, arma::vec delta_input, bool zeroMean = true, bool standardized = true) {
   double sigma = 1;
   int mu = 0;
 
@@ -44,11 +44,11 @@ double IARphiloglik(double x, arma::vec y, arma::vec st, arma::vec delta_input, 
     delta = delta_input.rows(1, n-1);
   }
 
-  if(standarized=="FALSE") {
+  if(standardized==false) {
     sigma = arma::var(y);
   }
 
-  if(zeroMean == "FALSE") {
+  if(zeroMean == false) {
     mu = arma::mean(y);
   }
 

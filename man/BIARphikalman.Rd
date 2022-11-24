@@ -4,9 +4,11 @@
 \alias{BIARphikalman}
 \title{Minus Log Likelihood of the BIAR Model}
 \usage{
-BIARphikalman(phiValues, y1, y2, t, yerr1, yerr2, zeroMean = "TRUE")
+BIARphikalman(yest, phiValues, y1, y2, t, yerr1, yerr2, zeroMean = TRUE)
 }
 \arguments{
+\item{yest}{An array with the estimate of a missing value in one or both time series of the bivariate process. This function recognizes a missing value with a NA. If the bivariate time series does not have a missing value, this value does not affect the computation of the likelihood.}
+
 \item{phiValues}{An array with the parameters of the BIAR model. The elements of the array are, in order, the real (phiR) and the imaginary (phiI) part of the coefficient of BIAR model.}
 
 \item{y1}{Array with the observations of the first time series of the BIAR process.}
@@ -19,7 +21,7 @@ BIARphikalman(phiValues, y1, y2, t, yerr1, yerr2, zeroMean = "TRUE")
 
 \item{yerr2}{Array with the measurements error standard deviations of the second time series of the BIAR process.}
 
-\item{zeroMean}{logical; if true, the array y has zero mean; if false, y has a mean different from zero.}
+\item{zeroMean}{logical; if TRUE, the array y has zero mean; if FALSE, y has a mean different from zero.}
 }
 \value{
 Value of the negative log likelihood evaluated in phiR and phiI.
@@ -37,7 +39,7 @@ y1=y[1,]
 y2=y[2,]
 yerr1=rep(0,n)
 yerr2=rep(0,n)
-BIARphikalman(phiValues=c(0.8,0.2),y1=y1,y2=y2,t=st,yerr1=yerr1,yerr2=yerr2)
+BIARphikalman(phiValues=c(0.8,0.2),y1=y1,y2=y2,t=st,yerr1=yerr1,yerr2=yerr2,yest=c(0,0))
 }
 \references{
 \insertRef{Elorrieta_2021}{iAR}

@@ -5,8 +5,8 @@
 #' @param y Array with the time series observations.
 #' @param st Array with the irregular observational times.
 #' @param delta Array with the measurements error standard deviations.
-#' @param zero.mean logical; if true, the array y has zero mean; if false, y has a mean different from zero.
-#' @param standarized logical; if true, the array y is standarized; if false, y contains the raw time series.
+#' @param zero.mean logical; if TRUE, the array y has zero mean; if FALSE, y has a mean different from zero.
+#' @param standardized logical; if TRUE, the array y is standardized; if FALSE, y contains the raw time series.
 #'
 #' @return A list with the following components:
 #' \itemize{
@@ -28,11 +28,11 @@
 #' y<-y$series
 #' phi=IARkalman(y=y,st=st)$phi
 #' print(phi)
-IARkalman<-function (y, st, delta=0,zero.mean='FALSE',standarized='TRUE')
+IARkalman<-function (y, st, delta=0,zero.mean=TRUE,standardized=TRUE)
 {
   if(sum(delta)==0){
     delta=rep(0,length(y))}
-  out = optimize(IARphikalman, interval = c(0, 1), y = y, st = st, yerr=delta,zeroMean = zero.mean,standarized=standarized)
+  out = optimize(IARphikalman, interval = c(0, 1), y = y, st = st, yerr=delta,zeroMean = zero.mean,standardized=standardized,yest=0)
   phi = out$minimum
   ll = out$objective
   return(list(phi = phi, kalman = ll))

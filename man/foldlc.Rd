@@ -4,7 +4,7 @@
 \alias{foldlc}
 \title{Plotting folded light curves}
 \usage{
-foldlc(file, f1, plot = T)
+foldlc(file, f1, plot = TRUE)
 }
 \arguments{
 \item{file}{Matrix with the light curve observations. The first column must have the irregular times, the second column must have the brightness magnitudes and the third column must have the measurement errors.}

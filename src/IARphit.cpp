@@ -13,6 +13,7 @@ using namespace arma;
 //' @param y Array with the time series observations
 //' @param st Array with the irregular observational times
 //' @param nu degrees of freedom
+//' @param yest The estimate of a missing value in the time series. This function recognizes a missing value with a NA. If the time series does not have a missing value, this value does not affect the computation of the likelihood.
 //'
 //' @return Value of the negative log likelihood evaluated in phi,sigma and nu.
 //' @export
@@ -21,16 +22,19 @@ using namespace arma;
 //'
 //' @seealso
 //'
-//' \code{\link{gentime}}, \code{\link{IARgsample}}
+//' \code{\link{gentime}}, \code{\link{IARtsample}}
 //'
 //' @examples
 //' n=300
 //' set.seed(6714)
-//' st<-gentime(n) #Unequally spaced times
+//' st<-gentime(n)
 //' y<-IARtsample(n,0.9,st,sigma2=1,nu=3)
-//' IARphit(x=c(0.9,1),y=y$y,st=st)
+//' IARphit(x=c(0.9,1),y=y$y,st=st,yest=0)
 // [[Rcpp::export]]
-double IARphit(arma::vec x, arma::vec y, arma::vec st, double nu = 3) {
+double IARphit(arma::vec yest,arma::vec x, arma::vec y, arma::vec st, double nu = 3) {
+  if(y.has_nan() == true) {
+     y.elem(arma::find_nonfinite(y))=yest;
+  }
   double sigma = arma::as_scalar(x.row(1));
   int n = y.size();
   arma::vec d = arma::diff(st);
