@@ -10,27 +10,25 @@
 #' @param remove_trend logical; if true, the linear trend of time series will be removed before the the harmonic model is fitted.
 #'
 #' @return  A list with the following components:
-#' \itemize{
 #' \item{res}{ Residuals to the harmonic fit of the time series.}
 #' \item{t}{ Observations times.}
 #' \item{R2}{ Adjusted R-Squared.}
 #' \item{MSE}{ Mean Squared Error.}
 #' \item{coef}{ Summary of the coefficients estimated by the harmonic model.}
-#' }
 #' @export
 #'
 #' @examples
 #' data(clcep)
 #' f1=0.060033386
-#' results=harmonicfit(file=clcep[,1:2],f1=f1)
-#' results$R2
-#' results$MSE
-#' results=harmonicfit(file=clcep[,1:2],f1=f1,nham=3)
-#' results$R2
-#' results$MSE
-#' results=harmonicfit(file=clcep[,1:2],f1=f1,weights=clcep[,3])
-#' results$R2
-#' results$MSE
+#' #results=harmonicfit(file=clcep[,1:2],f1=f1)
+#' #results$R2
+#' #results$MSE
+#' #results=harmonicfit(file=clcep[,1:2],f1=f1,nham=3)
+#' #results$R2
+#' #results$MSE
+#' #results=harmonicfit(file=clcep[,1:2],f1=f1,weights=clcep[,3])
+#' #results$R2
+#' #results$MSE
 harmonicfit<-function (file, f1, nham = 4, weights = NULL, print = FALSE,remove_trend=TRUE)
 {
   mycurve = file

@@ -15,9 +15,9 @@
 #' @section IAR functions:
 #' heloo
 #'
-#' @docType package
+#' "_PACKAGE"
 #' @name iAR
-#' @import Rcpp ggplot2
+#' @import S7 Rcpp ggplot2 zoo
 #' @importFrom Rdpack reprompt
 #' @importFrom stats nlminb rexp
 #' @importFrom stats rnorm runif qnorm

@@ -11,226 +11,224 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// BIARfit
-List BIARfit(arma::vec phiValues, arma::vec y1, arma::vec y2, arma::vec t, arma::vec yerr1, arma::vec yerr2, bool zeroMean);
-RcppExport SEXP _iAR_BIARfit(SEXP phiValuesSEXP, SEXP y1SEXP, SEXP y2SEXP, SEXP tSEXP, SEXP yerr1SEXP, SEXP yerr2SEXP, SEXP zeroMeanSEXP) {
+// BiARfit
+List BiARfit(arma::vec coef, arma::vec series1, arma::vec series2, arma::vec times, arma::vec series_esd1, arma::vec series_esd2, bool zero_mean);
+RcppExport SEXP _iAR_BiARfit(SEXP coefSEXP, SEXP series1SEXP, SEXP series2SEXP, SEXP timesSEXP, SEXP series_esd1SEXP, SEXP series_esd2SEXP, SEXP zero_meanSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::vec >::type phiValues(phiValuesSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type y1(y1SEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type y2(y2SEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type t(tSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type yerr1(yerr1SEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type yerr2(yerr2SEXP);
-    Rcpp::traits::input_parameter< bool >::type zeroMean(zeroMeanSEXP);
-    rcpp_result_gen = Rcpp::wrap(BIARfit(phiValues, y1, y2, t, yerr1, yerr2, zeroMean));
+    Rcpp::traits::input_parameter< arma::vec >::type coef(coefSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type series1(series1SEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type series2(series2SEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type times(timesSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type series_esd1(series_esd1SEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type series_esd2(series_esd2SEXP);
+    Rcpp::traits::input_parameter< bool >::type zero_mean(zero_meanSEXP);
+    rcpp_result_gen = Rcpp::wrap(BiARfit(coef, series1, series2, times, series_esd1, series_esd2, zero_mean));
     return rcpp_result_gen;
 END_RCPP
 }
-// BIARforecast
-List BIARforecast(double phiR, double phiI, arma::vec y1, arma::vec y2, arma::vec t, double tAhead);
-RcppExport SEXP _iAR_BIARforecast(SEXP phiRSEXP, SEXP phiISEXP, SEXP y1SEXP, SEXP y2SEXP, SEXP tSEXP, SEXP tAheadSEXP) {
+// BiARforecast
+List BiARforecast(arma::vec coef, arma::vec series1, arma::vec series2, arma::vec times, double tAhead);
+RcppExport SEXP _iAR_BiARforecast(SEXP coefSEXP, SEXP series1SEXP, SEXP series2SEXP, SEXP timesSEXP, SEXP tAheadSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double >::type phiR(phiRSEXP);
-    Rcpp::traits::input_parameter< double >::type phiI(phiISEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type y1(y1SEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type y2(y2SEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type t(tSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type coef(coefSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type series1(series1SEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type series2(series2SEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type times(timesSEXP);
     Rcpp::traits::input_parameter< double >::type tAhead(tAheadSEXP);
-    rcpp_result_gen = Rcpp::wrap(BIARforecast(phiR, phiI, y1, y2, t, tAhead));
+    rcpp_result_gen = Rcpp::wrap(BiARforecast(coef, series1, series2, times, tAhead));
     return rcpp_result_gen;
 END_RCPP
 }
-// BIARphikalman
-double BIARphikalman(arma::vec yest, arma::vec phiValues, arma::vec y1, arma::vec y2, arma::vec t, arma::vec yerr1, arma::vec yerr2, bool zeroMean);
-RcppExport SEXP _iAR_BIARphikalman(SEXP yestSEXP, SEXP phiValuesSEXP, SEXP y1SEXP, SEXP y2SEXP, SEXP tSEXP, SEXP yerr1SEXP, SEXP yerr2SEXP, SEXP zeroMeanSEXP) {
+// BiARphikalman
+double BiARphikalman(arma::vec yest, arma::vec coef, arma::vec series1, arma::vec series2, arma::vec times, arma::vec series_esd1, arma::vec series_esd2, bool zero_mean);
+RcppExport SEXP _iAR_BiARphikalman(SEXP yestSEXP, SEXP coefSEXP, SEXP series1SEXP, SEXP series2SEXP, SEXP timesSEXP, SEXP series_esd1SEXP, SEXP series_esd2SEXP, SEXP zero_meanSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::vec >::type yest(yestSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type phiValues(phiValuesSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type y1(y1SEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type y2(y2SEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type t(tSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type yerr1(yerr1SEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type yerr2(yerr2SEXP);
-    Rcpp::traits::input_parameter< bool >::type zeroMean(zeroMeanSEXP);
-    rcpp_result_gen = Rcpp::wrap(BIARphikalman(yest, phiValues, y1, y2, t, yerr1, yerr2, zeroMean));
+    Rcpp::traits::input_parameter< arma::vec >::type coef(coefSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type series1(series1SEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type series2(series2SEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type times(timesSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type series_esd1(series_esd1SEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type series_esd2(series_esd2SEXP);
+    Rcpp::traits::input_parameter< bool >::type zero_mean(zero_meanSEXP);
+    rcpp_result_gen = Rcpp::wrap(BiARphikalman(yest, coef, series1, series2, times, series_esd1, series_esd2, zero_mean));
     return rcpp_result_gen;
 END_RCPP
 }
-// CIARfit
-List CIARfit(arma::vec phiValues, arma::vec y, arma::vec t, bool standardized, double c);
-RcppExport SEXP _iAR_CIARfit(SEXP phiValuesSEXP, SEXP ySEXP, SEXP tSEXP, SEXP standardizedSEXP, SEXP cSEXP) {
+// CiARfit
+List CiARfit(arma::vec coef, arma::vec series, arma::vec times, bool zero_mean, bool standardized, double c);
+RcppExport SEXP _iAR_CiARfit(SEXP coefSEXP, SEXP seriesSEXP, SEXP timesSEXP, SEXP zero_meanSEXP, SEXP standardizedSEXP, SEXP cSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::vec >::type phiValues(phiValuesSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type y(ySEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type t(tSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type coef(coefSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type series(seriesSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type times(timesSEXP);
+    Rcpp::traits::input_parameter< bool >::type zero_mean(zero_meanSEXP);
     Rcpp::traits::input_parameter< bool >::type standardized(standardizedSEXP);
     Rcpp::traits::input_parameter< double >::type c(cSEXP);
-    rcpp_result_gen = Rcpp::wrap(CIARfit(phiValues, y, t, standardized, c));
+    rcpp_result_gen = Rcpp::wrap(CiARfit(coef, series, times, zero_mean, standardized, c));
     return rcpp_result_gen;
 END_RCPP
 }
-// CIARforecast
-List CIARforecast(double phiR, double phiI, arma::vec y1, arma::vec st, double tAhead);
-RcppExport SEXP _iAR_CIARforecast(SEXP phiRSEXP, SEXP phiISEXP, SEXP y1SEXP, SEXP stSEXP, SEXP tAheadSEXP) {
+// CiARforecast
+List CiARforecast(arma::vec coef, arma::vec series, arma::vec times, double tAhead, bool zero_mean, bool standardized);
+RcppExport SEXP _iAR_CiARforecast(SEXP coefSEXP, SEXP seriesSEXP, SEXP timesSEXP, SEXP tAheadSEXP, SEXP zero_meanSEXP, SEXP standardizedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double >::type phiR(phiRSEXP);
-    Rcpp::traits::input_parameter< double >::type phiI(phiISEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type y1(y1SEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type st(stSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type coef(coefSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type series(seriesSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type times(timesSEXP);
     Rcpp::traits::input_parameter< double >::type tAhead(tAheadSEXP);
-    rcpp_result_gen = Rcpp::wrap(CIARforecast(phiR, phiI, y1, st, tAhead));
+    Rcpp::traits::input_parameter< bool >::type zero_mean(zero_meanSEXP);
+    Rcpp::traits::input_parameter< bool >::type standardized(standardizedSEXP);
+    rcpp_result_gen = Rcpp::wrap(CiARforecast(coef, series, times, tAhead, zero_mean, standardized));
     return rcpp_result_gen;
 END_RCPP
 }
-// CIARphikalman
-double CIARphikalman(arma::vec yest, arma::vec x, arma::vec y, arma::vec t, arma::vec yerr, bool zeroMean, bool standardized, double c);
-RcppExport SEXP _iAR_CIARphikalman(SEXP yestSEXP, SEXP xSEXP, SEXP ySEXP, SEXP tSEXP, SEXP yerrSEXP, SEXP zeroMeanSEXP, SEXP standardizedSEXP, SEXP cSEXP) {
+// CiARphikalman
+double CiARphikalman(arma::vec yest, arma::vec coef, arma::vec series, arma::vec times, arma::vec series_esd, bool zero_mean, bool standardized, double c);
+RcppExport SEXP _iAR_CiARphikalman(SEXP yestSEXP, SEXP coefSEXP, SEXP seriesSEXP, SEXP timesSEXP, SEXP series_esdSEXP, SEXP zero_meanSEXP, SEXP standardizedSEXP, SEXP cSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::vec >::type yest(yestSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type x(xSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type y(ySEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type t(tSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type yerr(yerrSEXP);
-    Rcpp::traits::input_parameter< bool >::type zeroMean(zeroMeanSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type coef(coefSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type series(seriesSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type times(timesSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type series_esd(series_esdSEXP);
+    Rcpp::traits::input_parameter< bool >::type zero_mean(zero_meanSEXP);
     Rcpp::traits::input_parameter< bool >::type standardized(standardizedSEXP);
     Rcpp::traits::input_parameter< double >::type c(cSEXP);
-    rcpp_result_gen = Rcpp::wrap(CIARphikalman(yest, x, y, t, yerr, zeroMean, standardized, c));
+    rcpp_result_gen = Rcpp::wrap(CiARphikalman(yest, coef, series, times, series_esd, zero_mean, standardized, c));
     return rcpp_result_gen;
 END_RCPP
 }
-// CIARsample
-List CIARsample(int n, double phiR, double phiI, arma::vec st, int rho, int c);
-RcppExport SEXP _iAR_CIARsample(SEXP nSEXP, SEXP phiRSEXP, SEXP phiISEXP, SEXP stSEXP, SEXP rhoSEXP, SEXP cSEXP) {
+// CiARsample
+List CiARsample(double phiR, double phiI, arma::vec times, int rho, int c);
+RcppExport SEXP _iAR_CiARsample(SEXP phiRSEXP, SEXP phiISEXP, SEXP timesSEXP, SEXP rhoSEXP, SEXP cSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< int >::type n(nSEXP);
     Rcpp::traits::input_parameter< double >::type phiR(phiRSEXP);
     Rcpp::traits::input_parameter< double >::type phiI(phiISEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type st(stSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type times(timesSEXP);
     Rcpp::traits::input_parameter< int >::type rho(rhoSEXP);
     Rcpp::traits::input_parameter< int >::type c(cSEXP);
-    rcpp_result_gen = Rcpp::wrap(CIARsample(n, phiR, phiI, st, rho, c));
+    rcpp_result_gen = Rcpp::wrap(CiARsample(phiR, phiI, times, rho, c));
     return rcpp_result_gen;
 END_RCPP
 }
-// IARgsample
-List IARgsample(double phi, arma::vec st, int n, int sigma2, int mu);
-RcppExport SEXP _iAR_IARgsample(SEXP phiSEXP, SEXP stSEXP, SEXP nSEXP, SEXP sigma2SEXP, SEXP muSEXP) {
+// iARgsample
+List iARgsample(double coef, arma::vec times, int sigma, int mean);
+RcppExport SEXP _iAR_iARgsample(SEXP coefSEXP, SEXP timesSEXP, SEXP sigmaSEXP, SEXP meanSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double >::type phi(phiSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type st(stSEXP);
-    Rcpp::traits::input_parameter< int >::type n(nSEXP);
-    Rcpp::traits::input_parameter< int >::type sigma2(sigma2SEXP);
-    Rcpp::traits::input_parameter< int >::type mu(muSEXP);
-    rcpp_result_gen = Rcpp::wrap(IARgsample(phi, st, n, sigma2, mu));
+    Rcpp::traits::input_parameter< double >::type coef(coefSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type times(timesSEXP);
+    Rcpp::traits::input_parameter< int >::type sigma(sigmaSEXP);
+    Rcpp::traits::input_parameter< int >::type mean(meanSEXP);
+    rcpp_result_gen = Rcpp::wrap(iARgsample(coef, times, sigma, mean));
     return rcpp_result_gen;
 END_RCPP
 }
-// IARphigamma
-double IARphigamma(arma::vec yest, arma::vec x_input, arma::vec y, arma::vec st);
-RcppExport SEXP _iAR_IARphigamma(SEXP yestSEXP, SEXP x_inputSEXP, SEXP ySEXP, SEXP stSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::vec >::type yest(yestSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type x_input(x_inputSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type y(ySEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type st(stSEXP);
-    rcpp_result_gen = Rcpp::wrap(IARphigamma(yest, x_input, y, st));
-    return rcpp_result_gen;
-END_RCPP
-}
-// IARphikalman
-double IARphikalman(arma::vec yest, double x, arma::vec y, arma::vec yerr, arma::vec st, bool zeroMean, bool standardized);
-RcppExport SEXP _iAR_IARphikalman(SEXP yestSEXP, SEXP xSEXP, SEXP ySEXP, SEXP yerrSEXP, SEXP stSEXP, SEXP zeroMeanSEXP, SEXP standardizedSEXP) {
+// iARphigamma
+double iARphigamma(arma::vec yest, arma::vec coef, arma::vec series, arma::vec times);
+RcppExport SEXP _iAR_iARphigamma(SEXP yestSEXP, SEXP coefSEXP, SEXP seriesSEXP, SEXP timesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::vec >::type yest(yestSEXP);
-    Rcpp::traits::input_parameter< double >::type x(xSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type y(ySEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type yerr(yerrSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type st(stSEXP);
-    Rcpp::traits::input_parameter< bool >::type zeroMean(zeroMeanSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type coef(coefSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type series(seriesSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type times(timesSEXP);
+    rcpp_result_gen = Rcpp::wrap(iARphigamma(yest, coef, series, times));
+    return rcpp_result_gen;
+END_RCPP
+}
+// iARphikalman
+double iARphikalman(arma::vec yest, double coef, arma::vec series, arma::vec series_esd, arma::vec times, bool zero_mean, bool standardized);
+RcppExport SEXP _iAR_iARphikalman(SEXP yestSEXP, SEXP coefSEXP, SEXP seriesSEXP, SEXP series_esdSEXP, SEXP timesSEXP, SEXP zero_meanSEXP, SEXP standardizedSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec >::type yest(yestSEXP);
+    Rcpp::traits::input_parameter< double >::type coef(coefSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type series(seriesSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type series_esd(series_esdSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type times(timesSEXP);
+    Rcpp::traits::input_parameter< bool >::type zero_mean(zero_meanSEXP);
     Rcpp::traits::input_parameter< bool >::type standardized(standardizedSEXP);
-    rcpp_result_gen = Rcpp::wrap(IARphikalman(yest, x, y, yerr, st, zeroMean, standardized));
+    rcpp_result_gen = Rcpp::wrap(iARphikalman(yest, coef, series, series_esd, times, zero_mean, standardized));
     return rcpp_result_gen;
 END_RCPP
 }
-// IARphiloglik
-double IARphiloglik(double x, arma::vec y, arma::vec st, arma::vec delta_input, bool zeroMean, bool standardized);
-RcppExport SEXP _iAR_IARphiloglik(SEXP xSEXP, SEXP ySEXP, SEXP stSEXP, SEXP delta_inputSEXP, SEXP zeroMeanSEXP, SEXP standardizedSEXP) {
+// iARphiloglik
+double iARphiloglik(double coef, arma::vec series, arma::vec times, arma::vec series_esd, bool zero_mean, bool standardized);
+RcppExport SEXP _iAR_iARphiloglik(SEXP coefSEXP, SEXP seriesSEXP, SEXP timesSEXP, SEXP series_esdSEXP, SEXP zero_meanSEXP, SEXP standardizedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double >::type x(xSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type y(ySEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type st(stSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type delta_input(delta_inputSEXP);
-    Rcpp::traits::input_parameter< bool >::type zeroMean(zeroMeanSEXP);
+    Rcpp::traits::input_parameter< double >::type coef(coefSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type series(seriesSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type times(timesSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type series_esd(series_esdSEXP);
+    Rcpp::traits::input_parameter< bool >::type zero_mean(zero_meanSEXP);
     Rcpp::traits::input_parameter< bool >::type standardized(standardizedSEXP);
-    rcpp_result_gen = Rcpp::wrap(IARphiloglik(x, y, st, delta_input, zeroMean, standardized));
+    rcpp_result_gen = Rcpp::wrap(iARphiloglik(coef, series, times, series_esd, zero_mean, standardized));
     return rcpp_result_gen;
 END_RCPP
 }
-// IARphit
-double IARphit(arma::vec yest, arma::vec x, arma::vec y, arma::vec st, double nu);
-RcppExport SEXP _iAR_IARphit(SEXP yestSEXP, SEXP xSEXP, SEXP ySEXP, SEXP stSEXP, SEXP nuSEXP) {
+// iARphit
+double iARphit(arma::vec yest, arma::vec coef, arma::vec series, arma::vec times, double df);
+RcppExport SEXP _iAR_iARphit(SEXP yestSEXP, SEXP coefSEXP, SEXP seriesSEXP, SEXP timesSEXP, SEXP dfSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::vec >::type yest(yestSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type x(xSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type y(ySEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type st(stSEXP);
-    Rcpp::traits::input_parameter< double >::type nu(nuSEXP);
-    rcpp_result_gen = Rcpp::wrap(IARphit(yest, x, y, st, nu));
+    Rcpp::traits::input_parameter< arma::vec >::type coef(coefSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type series(seriesSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type times(timesSEXP);
+    Rcpp::traits::input_parameter< double >::type df(dfSEXP);
+    rcpp_result_gen = Rcpp::wrap(iARphit(yest, coef, series, times, df));
     return rcpp_result_gen;
 END_RCPP
 }
-// IARsample
-List IARsample(double phi, arma::vec st, int n);
-RcppExport SEXP _iAR_IARsample(SEXP phiSEXP, SEXP stSEXP, SEXP nSEXP) {
+// iARsample
+List iARsample(double coef, arma::vec times);
+RcppExport SEXP _iAR_iARsample(SEXP coefSEXP, SEXP timesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double >::type phi(phiSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type st(stSEXP);
-    Rcpp::traits::input_parameter< int >::type n(nSEXP);
-    rcpp_result_gen = Rcpp::wrap(IARsample(phi, st, n));
+    Rcpp::traits::input_parameter< double >::type coef(coefSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type times(timesSEXP);
+    rcpp_result_gen = Rcpp::wrap(iARsample(coef, times));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_iAR_BIARfit", (DL_FUNC) &_iAR_BIARfit, 7},
-    {"_iAR_BIARforecast", (DL_FUNC) &_iAR_BIARforecast, 6},
-    {"_iAR_BIARphikalman", (DL_FUNC) &_iAR_BIARphikalman, 8},
-    {"_iAR_CIARfit", (DL_FUNC) &_iAR_CIARfit, 5},
-    {"_iAR_CIARforecast", (DL_FUNC) &_iAR_CIARforecast, 5},
-    {"_iAR_CIARphikalman", (DL_FUNC) &_iAR_CIARphikalman, 8},
-    {"_iAR_CIARsample", (DL_FUNC) &_iAR_CIARsample, 6},
-    {"_iAR_IARgsample", (DL_FUNC) &_iAR_IARgsample, 5},
-    {"_iAR_IARphigamma", (DL_FUNC) &_iAR_IARphigamma, 4},
-    {"_iAR_IARphikalman", (DL_FUNC) &_iAR_IARphikalman, 7},
-    {"_iAR_IARphiloglik", (DL_FUNC) &_iAR_IARphiloglik, 6},
-    {"_iAR_IARphit", (DL_FUNC) &_iAR_IARphit, 5},
-    {"_iAR_IARsample", (DL_FUNC) &_iAR_IARsample, 3},
+    {"_iAR_BiARfit", (DL_FUNC) &_iAR_BiARfit, 7},
+    {"_iAR_BiARforecast", (DL_FUNC) &_iAR_BiARforecast, 5},
+    {"_iAR_BiARphikalman", (DL_FUNC) &_iAR_BiARphikalman, 8},
+    {"_iAR_CiARfit", (DL_FUNC) &_iAR_CiARfit, 6},
+    {"_iAR_CiARforecast", (DL_FUNC) &_iAR_CiARforecast, 6},
+    {"_iAR_CiARphikalman", (DL_FUNC) &_iAR_CiARphikalman, 8},
+    {"_iAR_CiARsample", (DL_FUNC) &_iAR_CiARsample, 5},
+    {"_iAR_iARgsample", (DL_FUNC) &_iAR_iARgsample, 4},
+    {"_iAR_iARphigamma", (DL_FUNC) &_iAR_iARphigamma, 4},
+    {"_iAR_iARphikalman", (DL_FUNC) &_iAR_iARphikalman, 7},
+    {"_iAR_iARphiloglik", (DL_FUNC) &_iAR_iARphiloglik, 6},
+    {"_iAR_iARphit", (DL_FUNC) &_iAR_iARphit, 5},
+    {"_iAR_iARsample", (DL_FUNC) &_iAR_iARsample, 2},
     {NULL, NULL, 0}
 };
 

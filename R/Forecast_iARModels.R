@@ -2,14 +2,14 @@
 #'
 #' Forecast with any of the models available in the iAR package
 #'
-#' @param phi Autocorrelation coefficient estimated by the method specified.
-#' @param y Array with the time series observations.
-#' @param st Array with the observational times.
+#' @param coef Autocorrelation coefficient estimated by the method specified.
+#' @param series Array with the time series observations.
+#' @param times Array with the observational times.
 #' @param tAhead The time ahead for which the forecast is required.
 #' @param model model to be used for the forecast. The default is to use the iAR model. Other models available are "iAR-T", "iAR-Gamma", "CiAR" and "BiAR".
-#' @param mu Level parameter of the IAR-Gamma process. A positive value.
-#' @param phiI Imaginary parameter of CIAR model or Cross-correlation parameter of BIAR model.
-#' @param nu degrees of freedom parameter of iAR-T model.
+#' @param mu Level parameter of the iAR-Gamma process. A positive value.
+#' @param phiI Imaginary parameter of CiAR model or Cross-correlation parameter of BiAR model.
+#' @param df degrees of freedom parameter of iAR-T model.
 #' @param level significance level for the confidence interval. The default value is 95.
 #'
 #' @return A dataframe with the following columns:
@@ -20,70 +20,73 @@
 #' \item{lowerCI}{ Lower limit of the confidence interval.}
 #' \item{upperCI}{ Upper limit of the confidence interval.}
 #' }
-#' @export
 #' @references
 #' \insertRef{Eyheramendy_2018}{iAR}
 #'
 #' @seealso
 #'
-#' \code{\link{gentime}}, \code{\link{IARforecast}}, \code{\link{IARgforecast}}, \code{\link{IARforecast}}, \code{\link{BIARforecast}}
+#' \code{\link{gentime}}, \code{\link{iARforecast}}, \code{\link{iARgforecast}}, \code{\link{iARforecast}}, \code{\link{BiARforecast}}
 #'
+#' @keywords internal
 #' @examples
+#' \dontshow{
 #' st <- gentime(n=200,lambda1=15,lambda2=2)
-#' y  <- IARsample(phi=0.9,n=200,st=st)
-#' model<-IARloglik(y=y$series,st=st)
-#' phi=model$phi
-#' forIAR<-IARforecast(phi=phi,y$series,st=st,tAhead=c(1.3),standardized=FALSE,zero.mean=FALSE)
-#' forIAR
-#' forIAR<-Forecast_iARModels(phi=phi,y=y$series,st=st,tAhead=c(1.3,2.6))
-#' forIAR
-Forecast_iARModels<-function(phi,y,st,tAhead,model="iAR",mu=NULL,phiI=NULL,nu=NULL,level=95)
+#' y  <- iARsample(coef=0.9,times=st)
+#' model<-iARloglik(series=y$series,times=st)
+#' phi=model$coef
+#' foriAR<-iARforecast(coef=phi,series=y$series,tAhead=c(1.3),standardized=FALSE,zero_mean=FALSE)
+#' foriAR
+#' foriAR<-Forecast_iARModels(coef=phi,series=y$series,times=st,tAhead=c(1.3,2.6))
+#' foriAR
+#' }
+#' @noRd
+Forecast_iARModels<-function(coef,series,times,tAhead,model="iAR",mu=NULL,phiI=NULL,df=NULL,level=95)
 {
   if(model == "iAR")
   {
-    y=as.numeric(y)
-    sigma = sqrt(var(y))
-    mu = mean(y)
-    y1=(y-mu)/sigma
-    fore=IARforecast(phi=phi,y=y1,st=st,tAhead=tAhead)
+    y=as.numeric(series)
+    sigma = sqrt(var(series))
+    mu = mean(series)
+    y1=(series-mu)/sigma
+    fore=iARforecast(coef=coef,series=y1,tAhead=tAhead)
     fore=fore*sigma+mu
-    error=sigma*(1-phi**(2*tAhead))
+    error=sigma*(1-coef**(2*tAhead))
   }
   if(model == "iAR-T")
   {
-    fore=IARforecast(phi=phi,y=y,st=st,tAhead=tAhead,standardized=FALSE,zero.mean=FALSE)
-    error=((nu-2)/nu)*sigma*(1-phi**(2*tAhead))
+    fore=iARforecast(coef=coef,series=series,tAhead=tAhead,standardized=FALSE,zero_mean=FALSE)
+    error=((df-2)/df)*sigma*(1-coef**(2*tAhead))
   }
   if(model == "iAR-Gamma")
   {
-    y1=y
-    if(min(y)<0)
-      y1=y-min(y)
-    fore=IARgforecast(phi=phi,mu=mu,y=y1,st=st,tAhead=tAhead)
-    if(min(y)<0)
-      fore=fore+min(y)
-    error=sigma*(1-phi**(2*tAhead))
+    y1=series
+    if(min(series)<0)
+      y1=series-min(series)
+    fore=iARgforecast(coef=coef,mean=mu,series=series,tAhead=tAhead)
+    if(min(series)<0)
+      fore=fore+min(series)
+    error=sigma*(1-coef**(2*tAhead))
   }
   if(model == "CiAR")
   {
     if(is.null(phiI))
       phiI=0
-    sigma = sqrt(var(as.numeric(y)))
-    mu = mean(as.numeric(y))
-    y1=y
-    fore=CIARforecast(phiR=phi,phiI=phiI,y1=y1,st=st,tAhead=tAhead)$forecast
-    Mod=sqrt(phi^2+phiI^2)
+    sigma = sqrt(var(as.numeric(series)))
+    mu = mean(as.numeric(series))
+    y1=series
+    fore=CiARforecast(coef=c(coef,phiI),series=y1,times=times,tAhead=tAhead)$forecast
+    Mod=sqrt(coef^2+phiI^2)
     error=sigma*(1-Mod**(2*tAhead))
   }
   if(model == "BiAR")
   {
     mu = apply(y,1,mean)
-    y1=y
+    y1=series
     y2=y1[2,]
     y1=y1[1,]
-    fore=BIARforecast(phiR=phi,phiI=phiI,y1=y1,y2=y2,t=st,tAhead=tAhead)$forecast
-    sigma=matrix(apply(y,1,sd),nrow=2)
-    Mod=sqrt(phi^2+phiI^2)
+    fore=BiARforecast(coef=c(coef,phiI),series1=y1,series2=y2,times=times,tAhead=tAhead)$forecast
+    sigma=matrix(apply(series,1,sd),nrow=2)
+    Mod=sqrt(coef^2+phiI^2)
     error=sigma*(1-Mod**(2*tAhead))
   }
   upper=fore+qnorm(level/100)*error

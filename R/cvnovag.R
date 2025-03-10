@@ -13,5 +13,5 @@
 #' \insertRef{Forster_2021}{iAR}
 #' @examples
 #' data(cvnovag)
-#' plot(cvnovag$t,cvnovag$m,type="l",ylab="",xlab="",col="green")
+#' #plot(cvnovag$t,cvnovag$m,type="l",ylab="",xlab="",col="green")
 "cvnovag"

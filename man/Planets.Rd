@@ -19,7 +19,7 @@ Time series corresponding to the residuals of the parametric model fitted by Jor
 }
 \examples{
 data(Planets)
-plot(Planets[,1],Planets[,2],xlab='Time from mid-transit (hours)',ylab='Noise',pch=20)
+#plot(Planets[,1],Planets[,2],xlab='Time from mid-transit (hours)',ylab='Noise',pch=20)
 }
 \references{
 \insertRef{Jordan_etal13}{iAR}
