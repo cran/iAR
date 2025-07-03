@@ -13,5 +13,5 @@
 #' \insertRef{Lira_2015}{iAR}
 #' @examples
 #' data(agn)
-#' #plot(agn$t,agn$m,type="l",ylab="",xlab="")
+#' plot(agn$t,agn$m,type="l",ylab="",xlab="")
 "agn"

@@ -20,7 +20,7 @@ Time series of the AGN MCG-6-30-15 measured in the K-band between 2006 August an
 }
 \examples{
 data(agn)
-#plot(agn$t,agn$m,type="l",ylab="",xlab="")
+plot(agn$t,agn$m,type="l",ylab="",xlab="")
 }
 \references{
 \insertRef{Lira_2015}{iAR}

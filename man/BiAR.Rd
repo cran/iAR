@@ -8,12 +8,13 @@ BiAR(
   times = integer(0),
   series = integer(0),
   series_esd = integer(0),
+  series_names = character(0),
   fitted_values = integer(0),
   loglik = integer(0),
   kalmanlik = integer(0),
-  coef = integer(0),
-  rho = 0,
+  coef = c(0.8, 0),
   tAhead = 1,
+  rho = 0,
   forecast = integer(0),
   interpolated_values = integer(0),
   interpolated_times = integer(0),
@@ -29,6 +30,8 @@ BiAR(
 
 \item{series_esd}{A numeric matrix or vector representing the error standard deviations of the time series.}
 
+\item{series_names}{An optional character vector representing the name of the series.}
+
 \item{fitted_values}{A numeric vector containing the fitted values from the model.}
 
 \item{loglik}{A numeric value representing the log-likelihood of the model.}
@@ -37,9 +40,9 @@ BiAR(
 
 \item{coef}{A numeric vector containing the estimated coefficients of the model.}
 
-\item{rho}{A numeric vector containing the estimated coefficients of the model.}
-
 \item{tAhead}{A numeric value specifying the forecast horizon (default: 1).}
+
+\item{rho}{A numeric vector containing the estimated coefficients of the model.}
 
 \item{forecast}{A numeric vector containing the forecasted values.}
 
@@ -69,6 +72,18 @@ Key features of the `BiAR` class include:
 - Assumptions of zero-mean and standardized processes, configurable by the user.
 - Estimation of model parameters and likelihoods, including Kalman likelihood.
 }
+\section{Validation Rules}{
+
+- `@times` must be a numeric vector without dimensions and strictly increasing.
+- `@series` must be a numeric matrix with two columns (bivariate) or be empty.
+- The number of rows in `@series` must match the length of `@times`.
+- `@series_esd`, if provided, must be a numeric matrix. Its dimensions must match those of `@series`, or it must have one row and the same number of columns.
+- If `@series_esd` contains NA values, they must correspond positionally to NA values in `@series`.
+- `@series_names`, if provided, must be a character vector with length equal to the number of columns in `@series`, and all names must be unique.
+- `@coef` must be a numeric vector of length 2, with each element strictly between -1 and 1.
+- `@tAhead` must be a strictly positive numeric scalar.
+}
+
 \examples{
 o=iAR::utilities()
 o<-gentime(o, n=200, distribution = "expmixture", lambda1 = 130, lambda2 = 6.5,p1 = 0.15, p2 = 0.85)

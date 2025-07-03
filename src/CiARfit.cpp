@@ -27,12 +27,14 @@ using namespace arma;
 //' \item{Qt}{ Covariance matrix of the state equation estimated by the CiAR model at the last time point.}
 //' @references
 //' \insertRef{Elorrieta_2019}{iAR}
-//'
+//' 
+//' @keywords internal
 //' @examples
 //' \dontshow{
 //' n=100
 //' set.seed(6714)
 //' }
+//' @noRd
 // [[Rcpp::export]]
 List CiARfit(arma::vec coef, arma::vec series, arma::vec times, bool zero_mean=true, bool standardized=true, double c=1) {
   List output;

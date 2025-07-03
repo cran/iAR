@@ -118,6 +118,7 @@ model_BiAR <- kalman(model_BiAR)
 print(model_BiAR@coef) 
 napos=10
 model_BiAR@series[napos,1]=NA
+model_BiAR@series_esd[napos,1]=NA
 model_BiAR <- interpolation(model_BiAR)
 interpolation=na.omit(model_BiAR@interpolated_values[,1])
 mse=as.numeric(y1[napos,1]-interpolation)^2

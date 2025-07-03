@@ -117,6 +117,7 @@
 #' print(model_BiAR@coef) 
 #' napos=10
 #' model_BiAR@series[napos,1]=NA
+#' model_BiAR@series_esd[napos,1]=NA
 #' model_BiAR <- interpolation(model_BiAR)
 #' interpolation=na.omit(model_BiAR@interpolated_values[,1])
 #' mse=as.numeric(y1[napos,1]-interpolation)^2
@@ -379,7 +380,6 @@ method(interpolation, BiAR) <- function(x, yini1 = 0, yini2 = 0, seed = NULL) {
                                            yini1 = yini1,
                                            yini2 = yini2,
                                            zero_mean = x@zero_mean,nmiss=nmiss)$fitted
-      
       # Replace the NA value with the imputed value
       vector[na_pos,na_serie] <- imputed_value
       auxtimes[na_pos,na_serie] <- x@times[na_pos]

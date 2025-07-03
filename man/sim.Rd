@@ -26,7 +26,7 @@ sim(x, ...)
       \item \code{rho}: The correlation parameter for the CiAR model.
       \item \code{c}: The scale parameter for the CiAR model.
     }
-  \item For \code{BiAR} (bi-AR models):
+  \item For \code{BiAR} (BiAR models):
     \itemize{
       \item \code{coef}: The coefficients of the BiAR model (real and imaginary).
       \item \code{times}: A numeric vector specifying the time points of the series.
@@ -35,7 +35,24 @@ sim(x, ...)
     }
 }}
 
-\item{...}{Additional arguments (unused).}
+\item{...}{Additional arguments for generating irregular times. This is used only if no time points have been provided in the \code{times} argument:
+\describe{
+\item{n}{A positive integer. Length of observation times. Default is 100. This is used only if no time points are provided in \code{times}.}
+\item{distribution}{A character string specifying the distribution of the observation times. Default is `"expmixture"`. Available options are:
+\describe{
+  \item{expmixture}{A mixture of two exponential distributions.}
+  \item{uniform}{A uniform distribution.}
+  \item{exponential}{A single exponential distribution.}
+  \item{gamma}{A gamma distribution.}
+  }
+  }
+  \item{lambda1}{Mean (1/rate) of the exponential distribution or the first exponential distribution in a mixture of exponential distributions. Default is `130`.}
+  \item{lambda2}{Mean (1/rate) of the second exponential distribution in a mixture of exponential distributions. Default is `6.5`.}
+  \item{p1}{Weight of the first exponential distribution in a mixture of exponential distributions. Default is `0.15`.}
+  \item{p2}{Weight of the second exponential distribution in a mixture of exponential distributions. Default is `0.85`.}
+  \item{a}{Shape parameter of a gamma distribution or lower limit of the uniform distribution. Default is `0`.}
+  \item{b}{Scale parameter of a gamma distribution or upper limit of the uniform distribution. Default is `1`.}
+}}
 }
 \value{
 An updated object of class \code{iAR}, \code{CiAR}, or \code{BiAR}, where the \code{series} property contains the simulated time series.
@@ -54,7 +71,7 @@ This function simulates time series based on the specified model and its paramet
     \item "t" for t-distribution.
     \item "gamma" for gamma distribution.
   \item For \code{CiAR} models, it uses complex autoregressive processes to generate the time series.
-  \item For \code{BiAR} models, it simulates a bi-AR process using specified coefficients and correlation.
+  \item For \code{BiAR} models, it simulates a BiAR process using specified coefficients and correlation.
 }
 The coefficients and any family-specific parameters must be set before calling this function.
 }

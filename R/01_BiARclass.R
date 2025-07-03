@@ -7,6 +7,7 @@
 #' @param times A numeric vector representing the time points.
 #' @param series A numeric matrix or vector representing the values of the time series.
 #' @param series_esd A numeric matrix or vector representing the error standard deviations of the time series.
+#' @param series_names An optional character vector representing the name of the series. 
 #' @param fitted_values A numeric vector containing the fitted values from the model.
 #' @param loglik A numeric value representing the log-likelihood of the model.
 #' @param kalmanlik A numeric value representing the Kalman likelihood of the model.
@@ -19,6 +20,16 @@
 #' @param interpolated_series A numeric vector containing the interpolated series.
 #' @param zero_mean A logical value indicating if the model assumes a zero-mean process (default: TRUE).
 #' @param standardized A logical value indicating if the model assumes a standardized process (default: TRUE).
+#'
+#' @section Validation Rules:
+#' - `@times` must be a numeric vector without dimensions and strictly increasing.
+#' - `@series` must be a numeric matrix with two columns (bivariate) or be empty.
+#' - The number of rows in `@series` must match the length of `@times`.
+#' - `@series_esd`, if provided, must be a numeric matrix. Its dimensions must match those of `@series`, or it must have one row and the same number of columns.
+#' - If `@series_esd` contains NA values, they must correspond positionally to NA values in `@series`.
+#' - `@series_names`, if provided, must be a character vector with length equal to the number of columns in `@series`, and all names must be unique.
+#' - `@coef` must be a numeric vector of length 2, with each element strictly between -1 and 1.
+#' - `@tAhead` must be a strictly positive numeric scalar.
 #'
 #' @details
 #' The `BiAR` class is designed to handle bivariate irregularly observed time series data
@@ -52,9 +63,34 @@ BiAR <- S7::new_class(
   properties = list(fitted_values = S7::class_numeric,
                     loglik = S7::class_numeric,
                     kalmanlik = S7::class_numeric,
-                    coef = S7::class_numeric,
+                    coef = S7::new_property(
+                      S7::class_numeric,
+                      default = c(0.8, 0), # igual que el ciar
+                      validator = function(value) {
+                        if (!(is.numeric(value) &&
+                              length(value) == 2 &&
+                              is.null(dim(value)))) {
+                          return("'coef' must be a numeric vector of length 2")
+                        }
+                        if (any(value < -1 | value > 1)) {
+                          return("Each value in 'coef' must be between -1 and 1")
+                        }
+                        NULL
+                      }
+                    ),
+                    tAhead = S7::new_property(
+                      S7::class_numeric,
+                      default = 1,
+                      validator = function(value) {
+                        if (!(length(value) == 1 &&
+                              is.null(dim(value)) &&
+                              value > 0)) {
+                          return("'tAhead' must be a strictly positive numeric scalar")
+                        }
+                        NULL
+                      }
+                    ),
                     rho = S7::new_property(class_numeric, default = 0),
-                    tAhead = S7::new_property(class_numeric, default = 1),
                     forecast = S7::class_numeric,
                     interpolated_values = S7::class_numeric,
                     interpolated_times = S7::class_numeric,

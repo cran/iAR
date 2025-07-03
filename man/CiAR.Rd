@@ -8,9 +8,10 @@ CiAR(
   times = integer(0),
   series = integer(0),
   series_esd = integer(0),
+  series_names = character(0),
   fitted_values = integer(0),
   kalmanlik = integer(0),
-  coef = integer(0),
+  coef = c(0.9, 0),
   tAhead = 1,
   forecast = integer(0),
   interpolated_values = integer(0),
@@ -27,11 +28,13 @@ CiAR(
 
 \item{series_esd}{A numeric vector representing the error standard deviations of the time series.}
 
+\item{series_names}{An optional character vector of length 1 representing the name of the series.}
+
 \item{fitted_values}{A numeric vector containing the fitted values from the model.}
 
 \item{kalmanlik}{A numeric value representing the Kalman likelihood of the model.}
 
-\item{coef}{A numeric vector containing the estimated coefficients of the model.}
+\item{coef}{A numeric vector of length 2, containing the coefficients of the model. Each value must lie within [-1, 1]. Defaults to `c(0.9, 0)`.}
 
 \item{tAhead}{A numeric value specifying the forecast horizon (default: 1).}
 
@@ -48,20 +51,38 @@ CiAR(
 \item{standardized}{A logical value indicating if the model assumes a standardized process (default: TRUE).}
 }
 \description{
-Represents a complex irregular autoregressive (CiAR) time series model.
-This class extends the `unidata` class and provides additional properties
-for modeling, forecasting, and interpolation of complex-valued time series data.
+Represents a complex irregular autoregressive (CiAR) time series model. 
+This class extends the `unidata` class and provides additional properties 
+for modeling, forecasting, and interpolating irregularly observed time 
+series data with both negative and positive autocorrelation.
 }
 \details{
-The `CiAR` class is designed to handle irregularly observed, complex-valued
-time series data using an autoregressive approach. It extends the `unidata`
-class to include functionalities specific to complex-valued data.
+The `CiAR` class is designed to handle irregularly observed time series 
+data with either negative or positive autocorrelation using an autoregressive 
+approach. It extends the `unidata` class to include functionalities 
+specific to the `CiAR` model.
 
 Key features of the `CiAR` class include:
-- Support for complex-valued time series data.
+- Support for irregularly observed time series data with negative 
+or positive autocorrelation.
 - Forecasting and interpolation functionalities for irregular time points.
-- Assumptions of zero-mean and standardized processes, configurable by the user.
+- Configurable assumptions of zero-mean and standardized processes.
 }
+\section{Validation}{
+
+- Inherits all validation rules from the `unidata` class:
+ - `@times`, `@series`, and `@series_esd` must be numeric vectors.
+ - `@times` must not contain `NA` values and must be strictly increasing.
+ - The length of `@series` must match the length of `@times`.
+ - The length of `@series_esd` must be 0, 1, or equal to the length of `@series`.
+ - `NA` values in `@series` must correspond exactly (positionally) to `NA` values in `@series_esd`.
+ - `@series_names`, if provided, must be a character vector of length 1.
+
+- `@coef` must be a numeric vector of length 2 with no dimensions.
+- Each value in `@coef` must be in the interval [-1, 1].
+- `@tAhead` must be a strictly positive numeric scalar.
+}
+
 \examples{
 o=iAR::utilities()
 o<-gentime(o, n=200, distribution = "expmixture", lambda1 = 130, lambda2 = 6.5,p1 = 0.15, p2 = 0.85)

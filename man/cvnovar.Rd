@@ -20,7 +20,7 @@ Time series of a cataclysmic variable/nova object observed in the r-band of the 
 }
 \examples{
 data(cvnovar)
-#plot(cvnovar$t,cvnovar$m,type="l",ylab="",xlab="",col="red")
+plot(cvnovar$t,cvnovar$m,type="l",ylab="",xlab="",col="red")
 }
 \references{
 \insertRef{Forster_2021}{iAR}

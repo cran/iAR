@@ -154,12 +154,14 @@ BiARphikalman <- function(yest, coef, series1, series2, times, series_esd1, seri
 #' \item{Qt}{ Covariance matrix of the state equation estimated by the CiAR model at the last time point.}
 #' @references
 #' \insertRef{Elorrieta_2019}{iAR}
-#'
+#' 
+#' @keywords internal
 #' @examples
 #' \dontshow{
 #' n=100
 #' set.seed(6714)
 #' }
+#' @noRd
 CiARfit <- function(coef, series, times, zero_mean = TRUE, standardized = TRUE, c = 1) {
     .Call(`_iAR_CiARfit`, coef, series, times, zero_mean, standardized, c)
 }

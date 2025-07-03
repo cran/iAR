@@ -6,7 +6,7 @@
 #' 3. Gamma-distribution iAR model (`iAR-Gamma`)
 #'
 #' @name sim
-#' 
+#'
 #' @param x An object of class \code{iAR}, \code{CiAR}, or \code{BiAR}, containing the model specification and parameters:
 #'   \itemize{
 #'     \item For \code{iAR} (irregular AR models), the model family could be "norm", "t", or "gamma", where:
@@ -26,7 +26,7 @@
 #'         \item \code{rho}: The correlation parameter for the CiAR model.
 #'         \item \code{c}: The scale parameter for the CiAR model.
 #'       }
-#'     \item For \code{BiAR} (bi-AR models):
+#'     \item For \code{BiAR} (BiAR models):
 #'       \itemize{
 #'         \item \code{coef}: The coefficients of the BiAR model (real and imaginary).
 #'         \item \code{times}: A numeric vector specifying the time points of the series.
@@ -34,9 +34,26 @@
 #'         \item \code{series_esd}: The series for the error structure (optional, used internally).
 #'       }
 #'   }
+#' @param ... Additional arguments for generating irregular times. This is used only if no time points have been provided in the \code{times} argument:
+#'   \describe{
+#'   \item{n}{A positive integer. Length of observation times. Default is 100. This is used only if no time points are provided in \code{times}.}
+#'   \item{distribution}{A character string specifying the distribution of the observation times. Default is `"expmixture"`. Available options are:
+#'   \describe{
+#'     \item{expmixture}{A mixture of two exponential distributions.}
+#'     \item{uniform}{A uniform distribution.}
+#'     \item{exponential}{A single exponential distribution.}
+#'     \item{gamma}{A gamma distribution.}
+#'     }
+#'     }
+#'     \item{lambda1}{Mean (1/rate) of the exponential distribution or the first exponential distribution in a mixture of exponential distributions. Default is `130`.}
+#'     \item{lambda2}{Mean (1/rate) of the second exponential distribution in a mixture of exponential distributions. Default is `6.5`.}
+#'     \item{p1}{Weight of the first exponential distribution in a mixture of exponential distributions. Default is `0.15`.}
+#'     \item{p2}{Weight of the second exponential distribution in a mixture of exponential distributions. Default is `0.85`.}
+#'     \item{a}{Shape parameter of a gamma distribution or lower limit of the uniform distribution. Default is `0`.}
+#'     \item{b}{Scale parameter of a gamma distribution or upper limit of the uniform distribution. Default is `1`.}
+#'   }
 #'
-#' @param ... Additional arguments (unused).
-#'
+#' 
 #' @return An updated object of class \code{iAR}, \code{CiAR}, or \code{BiAR}, where the \code{series} property contains the simulated time series.
 #'
 #' @details
@@ -47,7 +64,7 @@
 #'     \item "t" for t-distribution.
 #'     \item "gamma" for gamma distribution.
 #'   \item For \code{CiAR} models, it uses complex autoregressive processes to generate the time series.
-#'   \item For \code{BiAR} models, it simulates a bi-AR process using specified coefficients and correlation.
+#'   \item For \code{BiAR} models, it simulates a BiAR process using specified coefficients and correlation.
 #' }
 #' The coefficients and any family-specific parameters must be set before calling this function.
 #'
@@ -80,7 +97,15 @@
 #'
 #' @export
 sim <- S7::new_generic("sim", "x")
-S7::method(generic = sim, signature = iAR) <- function(x) {
+S7::method(generic = sim, signature = iAR) <- function(x, n = 100, distribution = "expmixture", lambda1 = 130, 
+                                                       lambda2 = 6.5, p1 = 0.15, p2 = 0.85, a = 0, b = 1) {
+    if (is.null(x@times) || length(x@times) == 0) {
+      message("Generating irregular time points using the gentime method of the class utilities...")
+      utils <- utilities()
+      utils <- gentime(utils, n = n, distribution = distribution,lambda1 = lambda1, 
+                       lambda2 = lambda2, p1 = p1, p2 = p2, a = a, b = b)
+      x@times <- utils@times
+    }
   if(x@family == "norm") {
     if(length(x@coef) == 0) stop("The sim method needs the coefficient of the iAR model")
     res <- iARsample(coef = x@coef, times = x@times)$series
@@ -100,13 +125,29 @@ S7::method(generic = sim, signature = iAR) <- function(x) {
     return(x)
   }
 }
-S7::method(generic = sim, signature = CiAR) <- function(x, rho = 0, c = 1) {
+S7::method(generic = sim, signature = CiAR) <- function(x, rho = 0, c = 1, n = 100, distribution = "expmixture", lambda1 = 130, 
+                                                        lambda2 = 6.5, p1 = 0.15, p2 = 0.85, a = 0, b = 1) {
+  if (is.null(x@times) || length(x@times) == 0) {
+    message("Generating irregular time points using the gentime method of the class utilities...")
+    utils <- utilities()
+    utils <- gentime(utils, n = n, distribution = distribution,lambda1 = lambda1, 
+                     lambda2 = lambda2, p1 = p1, p2 = p2, a = a, b = b)
+    x@times <- utils@times
+  }
   if(length(x@coef) == 0) stop("The sim method needs the coefficients of the CiAR model")
   res <- CiARsample(phiR = x@coef[1], phiI = x@coef[2], times = x@times, rho = rho, c = c)$series
   x@series <- res
   return(x)
 }
-S7::method(generic = sim, signature = BiAR) <- function(x) {
+S7::method(generic = sim, signature = BiAR) <- function(x, n = 100, distribution = "expmixture", lambda1 = 130, 
+                                                        lambda2 = 6.5, p1 = 0.15, p2 = 0.85, a = 0, b = 1) {
+  if (is.null(x@times) || length(x@times) == 0) {
+    message("Generating irregular time points using the gentime method of the class utilities...")
+    utils <- utilities()
+    utils <- gentime(utils, n = n, distribution = distribution,lambda1 = lambda1, 
+                     lambda2 = lambda2, p1 = p1, p2 = p2, a = a, b = b)
+    x@times <- utils@times
+  }
   if(length(x@coef) == 0) stop("The sim method needs the coefficients of the BiAR model")
   no_series_esd <- is.integer(x@series_esd)
   

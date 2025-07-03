@@ -6,17 +6,9 @@
 #' the complex irregular autoregressive model (Elorrieta et al.(2019) <doi:10.1051/0004-6361/201935560>)
 #' and the bivariate irregular autoregressive model (Elorrieta et al.(2021) <doi:10.1093/mnras/stab1216>)
 #'
-#' @section BIAR functions:
-#' The foo functions ...
-#'
-#' @section CIAR functions:
-#' The foo functions ...
-#'
-#' @section IAR functions:
-#' heloo
 #'
 #' "_PACKAGE"
-#' @name iAR
+#' @name iAR-package
 #' @import S7 Rcpp ggplot2 zoo
 #' @importFrom Rdpack reprompt
 #' @importFrom stats nlminb rexp
