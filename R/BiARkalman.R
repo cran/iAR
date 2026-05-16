@@ -77,11 +77,12 @@ BiARkalman<-function (series1, series2, times, series_esd1 = 0, series_esd2 = 0,
       aux <- value
       if(hessian==T)
       {
+        conv <- out$convergence
         hess=out$hessian
         stderr=as.numeric(sqrt(diag(solve(hess))))
         tvalue=par/stderr
         pvalue=2*pnorm(abs(tvalue),lower.tail=F)
-        summary=list(hess=hess,stderr=stderr,tvalue=tvalue,pvalue=pvalue)
+        summary=list(hess=hess,stderr=stderr,tvalue=tvalue,pvalue=pvalue,convergence=conv)
       }
       br <- br + 1
     }

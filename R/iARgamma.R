@@ -5,7 +5,7 @@
 #' @param series Array with the time series observations
 #' @param times Array with the irregular observational times
 #' @param hessian logical. Indicates whether to compute the Hessian matrix.; if TRUE, the Hessian matrix will be calculated; if FALSE, the Hessian will not be computed.
-#' 
+#'
 #' @return A list with the following components:
 #' \itemize{
 #' \item{coef}{ MLE of the phi parameter of the iAR-Gamma model.}
@@ -64,12 +64,13 @@ iARgamma<-function(series, times, hessian = FALSE)
       if(aux>value)
       {
         par<-out$par
+        conv <- out$convergence
         aux<-value
         hess=out$hessian
         stderr=as.numeric(sqrt(diag(solve(hess))))
         tvalue=par/stderr
         pvalue=2*pnorm(abs(tvalue),lower.tail=F)
-        summary=list(hess=hess,stderr=stderr,tvalue=tvalue,pvalue=pvalue)
+        summary=list(hess=hess,stderr=stderr,tvalue=tvalue,pvalue=pvalue,convergence=conv)
         br<-br+1
       }
     }
@@ -78,5 +79,5 @@ iARgamma<-function(series, times, hessian = FALSE)
     }
   if(aux==1e10)
     par<-c(0,0,0)
-  return(list(coef=par[1],mean=par[2],sigma=par[3],ll=aux,summary=summary)) 
+  return(list(coef=par[1],mean=par[2],sigma=par[3],ll=aux,summary=summary))
 }

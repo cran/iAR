@@ -79,11 +79,12 @@ CiARkalman<-function(series,times,series_esd=0,zero_mean=TRUE,standardized=TRUE,
       aux<-value
       if(hessian==T)
       {
+        conv <- out$convergence
         hess=out$hessian
         stderr=as.numeric(sqrt(diag(solve(hess))))
         tvalue=par/stderr
         pvalue=2*pnorm(abs(tvalue),lower.tail=F)
-        summary=list(hess=hess,stderr=stderr,tvalue=tvalue,pvalue=pvalue)
+        summary=list(hess=hess,stderr=stderr,tvalue=tvalue,pvalue=pvalue,convergence=conv)
       }
       br<-br+1
     }

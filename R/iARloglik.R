@@ -91,12 +91,13 @@ iARloglik=function(series,times,series_esd=0,zero_mean=TRUE,standardized=TRUE,he
   {
     out=optim(par=c(x=0),fn=iARphiloglik, series=series, times=times, series_esd=series_esd, zero_mean = zero_mean, standardized = standardized,method="L-BFGS-B",lower=0,upper=0.9999999,hessian=hessian)
     phi=as.numeric(out$par)
+    conv <- out$convergence
     ll=out$value
     hess=as.numeric(out$hessian)
     stderr=sqrt(diag(solve(hess)))
     tvalue=phi/stderr
     pvalue=2*pnorm(abs(tvalue),lower.tail=F)
-    summary=list(hess=hess,stderr=stderr,tvalue=tvalue,pvalue=pvalue)
+    summary=list(hess=hess,stderr=stderr,tvalue=tvalue,pvalue=pvalue,convergence=conv)
   }
   return(list(coef=phi,loglik=ll,summary=summary))
 }

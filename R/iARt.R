@@ -4,7 +4,7 @@
 #'
 #' @param series Array with the time series observations
 #' @param times Array with the irregular observational times
-#' @param df degrees of freedom 
+#' @param df degrees of freedom
 #' @param hessian logical. Indicates whether to compute the Hessian matrix.; if TRUE, the Hessian matrix will be calculated; if FALSE, the Hessian will not be computed.
 #'
 #' @return A list with the following components:
@@ -61,12 +61,13 @@ iARt<-function (series, times,df=3, hessian = FALSE)
       if(aux>value)
       {
         par<-out$par
+        conv <- out$convergence
         aux<-value
         hess=out$hessian
         stderr=as.numeric(sqrt(diag(solve(hess))))
         tvalue=par/stderr
         pvalue=2*pnorm(abs(tvalue),lower.tail=F)
-        summary=list(hess=hess,stderr=stderr,tvalue=tvalue,pvalue=pvalue)
+        summary=list(hess=hess,stderr=stderr,tvalue=tvalue,pvalue=pvalue,convergence=conv)
         br<-br+1
       }
     }

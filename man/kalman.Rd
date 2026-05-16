@@ -62,12 +62,10 @@ The method returns the updated model object, including the estimated parameters 
 library(iAR)
 n=100
 set.seed(6714)
-o=iAR::utilities()
-o<-gentime(o, n=n)
-times=o@times
+times=gentime(n=n)@times
 model_norm <- iAR(family = "norm", times = times, coef = 0.9,hessian=TRUE)
 model_norm <- sim(model_norm)
-model_norm <- kalman(model_norm)  
+model_norm <- kalman(model_norm)
 print(model_norm@coef)  # Access the estimated coefficients
 print(model_norm@kalmanlik)  # Access the Kalman likelihood value
 
@@ -81,7 +79,7 @@ model_CiAR@series=y1
 model_CiAR@series_esd=rep(0,n)
 model_CiAR <- kalman(model_CiAR)
 print(model_CiAR@coef)
-print(model_CiAR@kalmanlik)  
+print(model_CiAR@kalmanlik)
 
 # Example 3: Applying Kalman filter for MLE of BiAR model parameters
 set.seed(6714)
@@ -92,8 +90,8 @@ y1=y/apply(y,2,sd)
 model_BiAR@series=y1
 model_BiAR@series_esd=matrix(0,n,2)
 model_BiAR <- kalman(model_BiAR)
-print(model_BiAR@coef) 
-print(model_BiAR@kalmanlik)  
+print(model_BiAR@coef)
+print(model_BiAR@kalmanlik)
 
 }
 \references{
