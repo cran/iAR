@@ -16,6 +16,7 @@ kalman(x, ...)
       \item \code{series_esd}: A numeric vector specifying the error structure.
       \item \code{zero_mean}: A logical value indicating if the series should be zero-centered.
       \item \code{standardized}: A logical value indicating if the series should be standardized.
+      \item \code{init}: A numeric value specifying the initial value for parameter estimation. Default is 0.1.
     }
   \item For \code{CiAR} models, the object should contain:
     \itemize{
@@ -25,8 +26,7 @@ kalman(x, ...)
       \item \code{zero_mean}: A logical value indicating if the series should be zero-centered.
       \item \code{standardized}: A logical value indicating if the series should be standardized.
       \item \code{c}: A numeric value specifying the scale parameter for the CiAR model.
-      \item \code{niter}: An integer specifying the number of iterations for the Kalman filter.
-      \item \code{seed}: An integer seed for random number generation (optional).
+      \item \code{init}: A numeric vector of length two specifying the initial values for parameter estimation. When provided, these values are included as an additional starting point.
     }
   \item For \code{BiAR} models, the object should contain:
     \itemize{
@@ -34,8 +34,7 @@ kalman(x, ...)
       \item \code{times}: A numeric vector specifying the time points of the series.
       \item \code{series_esd}: A numeric matrix specifying the error structure for both series.
       \item \code{zero_mean}: A logical value indicating if the series should be zero-centered.
-      \item \code{niter}: An integer specifying the number of iterations for the Kalman filter.
-      \item \code{seed}: An integer seed for random number generation (optional).
+      \item \code{init}: A numeric vector of length two specifying the initial values for parameter estimation. When provided, these values are included as an additional starting point.
     }
 }}
 

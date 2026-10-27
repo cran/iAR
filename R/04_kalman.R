@@ -14,6 +14,7 @@
 #'         \item \code{series_esd}: A numeric vector specifying the error structure.
 #'         \item \code{zero_mean}: A logical value indicating if the series should be zero-centered.
 #'         \item \code{standardized}: A logical value indicating if the series should be standardized.
+#'         \item \code{init}: A numeric value specifying the initial value for parameter estimation. Default is 0.1.
 #'       }
 #'     \item For \code{CiAR} models, the object should contain:
 #'       \itemize{
@@ -23,8 +24,7 @@
 #'         \item \code{zero_mean}: A logical value indicating if the series should be zero-centered.
 #'         \item \code{standardized}: A logical value indicating if the series should be standardized.
 #'         \item \code{c}: A numeric value specifying the scale parameter for the CiAR model.
-#'         \item \code{niter}: An integer specifying the number of iterations for the Kalman filter.
-#'         \item \code{seed}: An integer seed for random number generation (optional).
+#'         \item \code{init}: A numeric vector of length two specifying the initial values for parameter estimation. When provided, these values are included as an additional starting point.
 #'       }
 #'     \item For \code{BiAR} models, the object should contain:
 #'       \itemize{
@@ -32,10 +32,10 @@
 #'         \item \code{times}: A numeric vector specifying the time points of the series.
 #'         \item \code{series_esd}: A numeric matrix specifying the error structure for both series.
 #'         \item \code{zero_mean}: A logical value indicating if the series should be zero-centered.
-#'         \item \code{niter}: An integer specifying the number of iterations for the Kalman filter.
-#'         \item \code{seed}: An integer seed for random number generation (optional).
+#'         \item \code{init}: A numeric vector of length two specifying the initial values for parameter estimation. When provided, these values are included as an additional starting point.
 #'       }
 #'   }
+#'
 #'
 #' @param ... Additional arguments (unused).
 #'
@@ -91,7 +91,7 @@
 #'
 #' @export
 kalman <- S7::new_generic("kalman", "x")
-S7::method(kalman, iAR) <- function(x) {
+S7::method(kalman, iAR) <- function(x, init = 0.1) {
   if(length(x@series) == 0) stop("The Kalman method needs a time series")
   if(any(is.na(x@series))) {
     warning("NA values were removed for parameter estimation.",call. = FALSE)
@@ -114,7 +114,7 @@ S7::method(kalman, iAR) <- function(x) {
                      series_esd = series_esd_aux,
                      zero_mean = x@zero_mean,
                      standardized = x@standardized,
-                     hessian = x@hessian)
+                     hessian = x@hessian,init=init)
     x@coef <- .clamp_iar_coef(res$coef)
     x@kalmanlik <- res$kalman
     x@summary <- res$summary
@@ -134,7 +134,7 @@ S7::method(kalman, iAR) <- function(x) {
   }
 }
 
-S7::method(kalman, CiAR) <- function(x, c = 1, niter = 10, seed = NULL) {
+S7::method(kalman, CiAR) <- function(x, c = 1, init = rep(0,2)) {
   if(length(x@series) == 0) stop("The Kalman method needs a time series")
   if(any(is.na(x@series))) {
     warning("NA values were removed for parameter estimation.",call. = FALSE)
@@ -157,9 +157,7 @@ S7::method(kalman, CiAR) <- function(x, c = 1, niter = 10, seed = NULL) {
                     zero_mean = x@zero_mean,
                     standardized = x@standardized,
                     hessian = x@hessian,
-                    c = c,
-                    niter = niter,
-                    seed = seed)
+                    c = c,init=init)  
   x@coef <- c(res$phiR, res$phiI)
   if (sqrt(sum(x@coef^2)) > 0.995)
     warning(paste0(
@@ -183,7 +181,7 @@ S7::method(kalman, CiAR) <- function(x, c = 1, niter = 10, seed = NULL) {
   return(x)
 }
 
-S7::method(kalman, BiAR) <- function(x, niter = 10, seed = NULL) {
+S7::method(kalman, BiAR) <- function(x, init = rep(0,2)) {
   if(length(x@series) == 0) stop("The Kalman method needs a bivariate time series")
   if(any(!is.finite(x@series))) {
     warning("Rows with NA values were removed for parameter estimation.", call. = FALSE)
@@ -210,9 +208,7 @@ S7::method(kalman, BiAR) <- function(x, niter = 10, seed = NULL) {
                     series_esd1 = esd1,
                     series_esd2 = esd2,
                     zero_mean = x@zero_mean,
-                    hessian = x@hessian,
-                    niter = niter,
-                    seed = seed)
+                    hessian = x@hessian,init=init)
   x@coef <- c(res$phiR, res$phiI)
   if (sqrt(sum(x@coef^2)) > 0.995)
     warning(paste0(

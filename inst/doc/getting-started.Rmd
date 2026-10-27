@@ -151,8 +151,7 @@ summary(m_h)
 
 ### Forecasting
 
-After estimation, use `forecast()` to predict `tAhead` time units into the
-future.
+After estimation, use `forecast()` to predict `tAhead` time units into the future.
 
 ```{r iar-forecast}
 m_fc <- forecast(m_kalman, tAhead = 10)

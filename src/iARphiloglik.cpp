@@ -65,6 +65,7 @@ double iARphiloglik(double coef, arma::vec series, arma::vec times, arma::vec se
 
   arma::vec d = arma::diff(times);
   arma::vec phi(n-1, fill::zeros);
+  if(x >= 0.0 && x < 1.0) {
   for(int i = 0; i < n-1; ++i) {
     phi[i] = std::pow(x, d[i]);
   }
@@ -82,4 +83,7 @@ double iARphiloglik(double coef, arma::vec series, arma::vec times, arma::vec se
   arma::vec temp3 = arma::pow(temp2, 2);
 
   return cte + 0.5 * arma::sum(temp1 + temp3/temp0);
+  } else {
+    return 1e10;
+  } 
 }

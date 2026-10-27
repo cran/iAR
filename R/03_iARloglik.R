@@ -13,6 +13,7 @@
 #'     \item \code{zero_mean}: Logical. Indicates whether the series should be mean-centered.
 #'     \item \code{standardized}: Logical. Indicates whether the series is standardized.
 #'     \item \code{hessian}: Logical. If \code{TRUE}, the function computes the Hessian matrix for parameter estimation.
+#'     \item \code{init}: Initial values for parameter estimation. For \code{family = "norm"}, a single numeric value (default 0.1). For \code{family = "t"}, a numeric vector of length two. For \code{family = "gamma"}, a numeric vector of length three.
 #'     \item \code{family}: The distribution family of the iAR model (one of "norm", "t", or "gamma").
 #'     \item \code{df}: Degrees of freedom for the t-distribution (only for \code{family = "t"}).
 #'     \item \code{sigma}: The scale parameter for the t-distribution (only for \code{family = "t"}).
@@ -58,7 +59,7 @@
 #'
 #' @export
 loglik <- S7::new_generic("loglik","x")
-S7::method(generic=loglik,signature=iAR) <- function(x) {
+S7::method(generic=loglik,signature=iAR) <- function(x, init=NULL) {
   if(length(x@series) == 0) stop("The loglik method needs a time series")
   if(any(is.na(x@series))) {
     warning("NA values were removed for parameter estimation.",call. = FALSE)
@@ -76,12 +77,14 @@ S7::method(generic=loglik,signature=iAR) <- function(x) {
     series_esd_aux <- x@series_esd
   }
   if(x@family == "norm"){
+    if(is.null(init))
+      init=0.1
     res <- iARloglik(series = series_aux,
                      times = times_aux,
                      series_esd = series_esd_aux,
                      zero_mean = x@zero_mean,
                      standardized = x@standardized,
-                     hessian = x@hessian)
+                     hessian = x@hessian,init=init)
     x@coef <- .clamp_iar_coef(res$coef)
     x@loglik <- res$loglik
     x@summary <- res$summary
@@ -99,12 +102,13 @@ S7::method(generic=loglik,signature=iAR) <- function(x) {
     }
     return(x)
   }
-
   if(x@family == "t"){
+    if(is.null(init))
+      init=c(0,1)
     res <- iARt(series = series_aux,
                 times = times_aux,
                 df = x@df,
-                hessian = x@hessian)
+                hessian = x@hessian, init=init)
     x@coef <- .clamp_iar_coef(res$coef)
     x@sigma <- res$sigma
     x@loglik <- res$ll
@@ -125,9 +129,11 @@ S7::method(generic=loglik,signature=iAR) <- function(x) {
   }
 
   if(x@family == "gamma"){
+    if(is.null(init))
+      init=c(0,1,1)
     res <- iARgamma(series = series_aux,
                     times = times_aux,
-                    hessian = x@hessian)
+                    hessian = x@hessian,init=init)
     x@coef <- .clamp_iar_coef(res$coef)
     x@mean <- res$mean
     x@variance <- res$sigma

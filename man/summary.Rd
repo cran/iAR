@@ -3,6 +3,9 @@
 \name{summary}
 \alias{summary}
 \title{Summary of iAR package models}
+\usage{
+summary(object, ...)
+}
 \arguments{
 \item{object}{An object of class `iAR`, `CiAR`, `BiAR`, or `utilities`.
 For fitted model objects, this contains model-specific parameters such as

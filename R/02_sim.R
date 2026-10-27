@@ -158,11 +158,9 @@ S7::method(generic = sim, signature = BiAR) <- function(x, n = 100, distribution
   if(length(x@coef) == 0) stop("The sim method needs the coefficients of the BiAR model")
   no_series_esd <- length(x@series_esd) == 0
   
-  if(no_series_esd) x@series_esd <- matrix(0, ncol = 2)
-  res <- BiARsample(times = x@times, phiR = x@coef[1], phiI = x@coef[2], series_esd1 = x@series_esd[,1], 
-                    series_esd2 = x@series_esd[,2], rho = x@rho)$series
-  if(no_series_esd) x@series_esd <- integer(0)
+  if(no_series_esd) series_esd <- matrix(0, ncol = 2)
+  res <- BiARsample(times = x@times, phiR = x@coef[1], phiI = x@coef[2], series_esd1 = series_esd[,1], 
+                    series_esd2 = series_esd[,2], rho = x@rho)$series
   x@series <- cbind(res[1,],res[2,])
-  
   return(x)
 }
